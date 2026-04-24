@@ -1,0 +1,61 @@
+
+    /* Styles for the modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        /* background-color: rgba(0, 0, 0, 0.4); */
+        background: rgba(0,0,0,0.7);
+      }
+  
+      video {
+      max-width: 100%;
+      max-height: 100%;
+  }
+      .modal-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 70%;
+        height: 70%;
+        margin: auto;
+        background-color: #fefefe;
+        border: 1px solid #888;
+        
+      }
+  
+      /* Styles for the close button */
+      .close {
+        position: absolute;
+        top: -30px;
+        right: 0px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #888;
+        cursor: pointer;
+        z-index: 9999;
+        line-height: 1;
+      }
+  
+      .close:hover{
+          color: #eee6e6;
+      }
+  
+      @media screen and (max-width:768px){
+          .modal-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        height: 70%;
+        margin: auto;
+        background-color: #fefefe;
+        border: 1px solid #888;
+        
+      }
+      }

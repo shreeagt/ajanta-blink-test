@@ -1,0 +1,192 @@
+/* Dentist Interactive Map Flow CSS */
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 330px;
+    /* Reduced height to fit everything nicely */
+    background: #f0f2f5;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    /* Reduced margin */
+}
+
+.map-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) opacity(0.6);
+    transition: filter 1.5s ease;
+}
+
+.map-bg.active {
+    filter: grayscale(0%) opacity(1) brightness(1.1);
+}
+
+.counter-box {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+    text-align: center;
+    z-index: 10;
+    transition: all 0.5s ease;
+}
+
+.counter-box span {
+    font-size: 24px;
+    color: var(--accent);
+}
+
+/* Ripple Effect */
+.ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: transparent;
+    border: 4px solid #00bcd4;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.ripple.animate {
+    animation: rippleEffect 1.5s ease-out forwards;
+}
+
+@keyframes rippleEffect {
+    0% {
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+        border-width: 8px;
+    }
+
+    100% {
+        width: 600px;
+        height: 600px;
+        opacity: 0;
+        border-width: 1px;
+    }
+}
+
+/* Smile Icons Pop-up */
+.smile-icon {
+    position: absolute;
+    font-size: 24px;
+    color: #ffca28;
+    opacity: 0;
+    transform: scale(0.5) translateY(10px);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 6;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.smile-icon.show {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* Engagement Overlay */
+.engagement-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    /* Switched to dvh for native mobile centering */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    /* Better fit for smaller screens */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.engagement-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+.engagement-card {
+    background: #fff;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.engagement-overlay.show .engagement-card {
+    transform: translateY(0);
+}
+
+.pledge-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+.pledge-item input[type="checkbox"] {
+    margin-top: 4px;
+    transform: scale(1.2);
+    accent-color: var(--primary);
+}
+
+.pledge-item label {
+    font-size: 13px;
+    color: #495057;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.signature-pad-container {
+    border: 2px dashed #cfd8dc;
+    border-radius: 12px;
+    background: #fbfbfc;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+#signature-pad {
+    width: 100%;
+    height: 150px;
+    touch-action: none;
+}
+
+.sig-clear-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 11px;
+    color: #ef5350;
+    background: #ffebee;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
