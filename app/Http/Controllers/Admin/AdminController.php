@@ -17,22 +17,19 @@ class AdminController extends Controller
 {
     public function verifyAdmin(Request $request){
         $data = $request->validate([
-            'emp_no' => 'required',
-            'password' => 'required' 
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
-        $IsMember = User::where('emp_no', $request->emp_no)->where('role_id', 1)->first();
-        if($IsMember != null){
-            $data = [
-                'email' => $IsMember->email,
-                'password' => $request->password
-            ];
-            if(Auth::attempt($data)){
-                return redirect()->route('admin.blink.dashboard');
-            }else{
-                return redirect()->route('admin.login');
-            }
-        }else{
-            return redirect()->route('admin.login');
+        // Ensure the user is an admin (role_id = 1)
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password,
+            'role_id' => 1,
+        ];
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('admin.blink.dashboard');
+        } else {
+            return redirect()->route('admin.login')->withErrors(['email' => 'Invalid credentials']);
         }
     }
 
@@ -177,8 +174,16 @@ public function exportCsv()
     $filename = 'doctors_urls_' . date('Y-m-d_H-i-s') . '.csv';
     $handle = fopen('php://memory', 'w');
 
-    // CSV header
-    fputcsv($handle, ['Name', 'Specialty', 'Profile Image URL', 'Video URL', 'Image URL']);
+    // CSV header – use Laravel translation helper
+    fputcsv($handle, [
+        __('Name'),
+        __('Specialty'),
+        __('Profile Image URL'),
+        __('Video URL'),
+        __('Image URL'),
+        __('Frequency'),
+        __('Intensity')
+    ]);
 
     foreach ($doctors as $doc) {
         fputcsv($handle, [

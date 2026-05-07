@@ -15,4 +15,9 @@ class BlinkTest extends Model
     {
         return $this->belongsTo(Employee::class, 'emp_code', 'emp_code');
     }
+
+    public function cvs()
+    {
+        return $this->hasOne(CvsScreening::class, 'blink_test_id');
+    }
 }

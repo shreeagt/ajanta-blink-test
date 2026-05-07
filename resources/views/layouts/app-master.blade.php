@@ -20,7 +20,7 @@
 
 
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  
+
 
   <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 
@@ -30,8 +30,8 @@
   <!-- Responsive stylesheet -->
   <link rel="stylesheet" href="{{asset('theme/css/responsive.css')}}">
   <!-- Favicon -->
-  <link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
-  <link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" />
+  <link href="{{ asset('assets/images/brand_logo.png') }}" rel="shortcut icon" type="image/png" />
+
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -44,23 +44,23 @@
 </head>
 
 <style>
-  
-.modal.fade .modal-dialog {
+  .modal.fade .modal-dialog {
     -webkit-transform: translate(0);
     -ms-transform: translate(0);
     -o-transform: translate(0);
     transform: translate(0);
-}
+  }
 
-.top-scroll {
-  overflow-x: auto;
-  overflow-y: hidden;
-  height: 20px; /* small height just to show scrollbar */
-}
+  .top-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 20px;
+    /* small height just to show scrollbar */
+  }
 
-.scroll-sync {
-  height: 1px;
-}
+  .scroll-sync {
+    height: 1px;
+  }
 
 
   .logo img {
@@ -73,19 +73,20 @@
 
   thead th {
     white-space: nowrap;
-    padding: 10px 20px!important;
-}
+    padding: 10px 20px !important;
+  }
 
-table.dataTable thead th, table.dataTable thead td {
+  table.dataTable thead th,
+  table.dataTable thead td {
     font-size: 13px;
     text-align: center;
     align-items: center;
     vertical-align: middle;
-}
+  }
 
-.table{
-  width:100%;
-}
+  .table {
+    width: 100%;
+  }
 
   body,
   html {
@@ -129,7 +130,8 @@ table.dataTable thead th, table.dataTable thead td {
           <div class="col-sm-4 col-xl-2">
             <div class="text-center text-lg-start d-flex align-items-center mb15-520">
               <div class="fz20 me-4">
-                <a href="#" class="dashboard_sidebar_toggle_icon text-thm1 vam"><i class="fa-sharp fa-solid fa-bars-staggered"></i></a>
+                <a href="#" class="dashboard_sidebar_toggle_icon text-thm1 vam"><i
+                    class="fa-sharp fa-solid fa-bars-staggered"></i></a>
               </div>
               <div class="dashboard_header_logo">
                 <a href="/" class="logo">
@@ -140,19 +142,25 @@ table.dataTable thead th, table.dataTable thead td {
             </div>
           </div>
           @auth
-          <div class="col-sm-8 col-xl-10 d-none d-md-block">
-            <div class="text-center text-lg-end header_right_widgets">
-              <ul class="mb0 d-flex justify-content-center justify-content-sm-end">
-                @if(Auth::user()->role_id == 1)
-                <li class=""><span class="d-inline-block">Hi {{auth()->user()->name}}</span><a class="text-center d-inline-block mr-2" style="text-align: right;" href="{{ route('admin.logout.perform') }}">Logout <span class="flaticon-exit"></span></a></li>
-                @elseif(Auth::user()->role_id == 2 && Auth::user()->role_id != 1)
-                <li class=""><span class="d-inline-block">Hi {{auth()->user()->name}}</span><a class="text-center d-inline-block mr-2" style="text-align: right;" href="{{ route('supervisor.logout') }}">Logout <span class="flaticon-exit"></span></a></li>
-                @else
-                <li class=""><span class="d-inline-block">Hi {{auth()->user()->name}}</span><a class="text-center d-inline-block mr-2" style="text-align: right;" href="{{ route('so.logout') }}">Logout <span class="flaticon-exit"></span></a></li>
-                @endif
-              </ul>
+            <div class="col-sm-8 col-xl-10 d-none d-md-block">
+              <div class="text-center text-lg-end header_right_widgets">
+                <ul class="mb0 d-flex justify-content-center justify-content-sm-end">
+                  @if(Auth::user()->role_id == 1)
+                    <li class=""><span class="d-inline-block">Hi {{auth()->user()->name}}</span><a
+                        class="text-center d-inline-block mr-2" style="text-align: right;"
+                        href="{{ route('admin.logout.perform') }}">Logout <span class="flaticon-exit"></span></a></li>
+                  @elseif(Auth::user()->role_id == 2 && Auth::user()->role_id != 1)
+                    <li class=""><span class="d-inline-block">Hi {{auth()->user()->name}}</span><a
+                        class="text-center d-inline-block mr-2" style="text-align: right;"
+                        href="{{ route('supervisor.logout') }}">Logout <span class="flaticon-exit"></span></a></li>
+                  @else
+                    <li class=""><span class="d-inline-block">Hi {{auth()->user()->name}}</span><a
+                        class="text-center d-inline-block mr-2" style="text-align: right;"
+                        href="{{ route('so.logout') }}">Logout <span class="flaticon-exit"></span></a></li>
+                  @endif
+                </ul>
+              </div>
             </div>
-          </div>
           @endauth
           <div class="col-sm-3 col-xl-3 d-none d-md-block">
           </div>
@@ -182,12 +190,17 @@ table.dataTable thead th, table.dataTable thead td {
   <!-- Wrapper End -->
   <script src="{{asset('theme/js/jquery-3.6.0.js')}}"></script>
   <!-- Script -->
-  {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}
+  {{--
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}
   <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' type='text/javascript'></script>
 
   <!-- Font Awesome JS -->
-  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"> </script>
-  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"> </script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"> </script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"> </script>
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -216,7 +229,7 @@ table.dataTable thead th, table.dataTable thead td {
   <!-- Custom script for all pages -->
   <script src="{{asset('theme/js/script.js')}}"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       // Pie chart
       new Chart(document.getElementById("chartjs-dashboard-pie"), {
         type: "pie",
@@ -246,18 +259,18 @@ table.dataTable thead th, table.dataTable thead td {
     });
   </script>
 
-<script>
-$(document).ready(function () {
-    let table = $('.table').DataTable({
+  <script>
+    $(document).ready(function () {
+      let table = $('.table').DataTable({
         dom: 'Bfrtip',
         scrollX: true,
         buttons: [
           'copy', 'csv', 'excel', 'pdf', 'print'
         ],
-        pageLength:200
-    });
+        pageLength: 200
+      });
 
-    setTimeout(function () {
+      setTimeout(function () {
         let scrollBody = $('.dataTables_scrollBody');
         let actualTable = scrollBody.find('table');
 
@@ -271,14 +284,14 @@ $(document).ready(function () {
 
         // Sync both scrolls
         topScrollWrapper.on('scroll', function () {
-            scrollBody.scrollLeft($(this).scrollLeft());
+          scrollBody.scrollLeft($(this).scrollLeft());
         });
         scrollBody.on('scroll', function () {
-            topScrollWrapper.scrollLeft($(this).scrollLeft());
+          topScrollWrapper.scrollLeft($(this).scrollLeft());
         });
-    }, 100);
-});
-</script>
+      }, 100);
+    });
+  </script>
 
 
   <!-- <script type="text/javascript">

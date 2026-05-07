@@ -13,6 +13,10 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'jal-login',
-        'save'
+        'save',
+        'blink-login',
+        'save-blink-test',
+        'save-cvs-test',
+        'set-language'
     ];
 }

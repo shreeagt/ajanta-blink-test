@@ -14,11 +14,12 @@ class DoctorPosterAdminController extends Controller
 {
     public function dashboard()
     {
-        $posters = BlinkTest::with('employee')->orderBy('created_at', 'desc')->get();
+        $posters = BlinkTest::with(['employee', 'cvs'])->orderBy('created_at', 'desc')->get();
         $pledgeCount = BlinkTest::count();
-        $baseCount = 5240;
+        $todayCount = BlinkTest::whereDate('created_at', today())->count();
+        $soCount = Employee::count();
 
-        return view('admin.blink_test_dashboard', compact('posters', 'pledgeCount', 'baseCount'));
+        return view('admin.blink_test_dashboard', compact('posters', 'pledgeCount', 'todayCount', 'soCount'));
     }
 
     public function manpower()

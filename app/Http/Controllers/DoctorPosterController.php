@@ -27,4 +27,21 @@ class DoctorPosterController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Invalid Employee Code or Password'], 401);
     }
+
+    public function setLanguage(Request $request)
+    {
+        $request->validate([
+            'emp_code' => 'required',
+            'language' => 'required'
+        ]);
+
+        $employee = Employee::where('emp_code', $request->emp_code)->first();
+        if ($employee) {
+            $employee->language = $request->language;
+            $employee->save();
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false], 404);
+    }
 }

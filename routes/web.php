@@ -9,13 +9,20 @@ use Illuminate\Support\Facades\Auth;
 
 // ─── FRONTEND: Blink Test ──────────────────────────────────
 Route::get('/', function () {
-    return view('blink_test_app');
+    return view('blink_test_app', [
+        'all_translations' => \App\Models\AppTranslation::getAll(),
+        'all_symptoms' => \App\Models\CvsSymptom::getAllGrouped()
+    ]);
 })->name('blink.app');
 
 // Blink Test routes
 Route::post('/save-blink-test', [\App\Http\Controllers\BlinkTestController::class, 'store'])->name('blink_test.save');
+Route::post('/save-cvs-test', [\App\Http\Controllers\BlinkTestController::class, 'storeCvs'])->name('cvs_test.save');
 Route::get('/prescription-dashboard', [\App\Http\Controllers\BlinkTestController::class, 'dashboardStats'])->name('prescription.dashboard');
+Route::get('/blink-test/{id}/detail', [\App\Http\Controllers\BlinkTestController::class, 'getTestDetail'])->name('blink_test.detail');
 Route::post('/blink-login', [DoctorPosterController::class, 'login'])->name('blink.login');
+Route::post('/set-language', [DoctorPosterController::class, 'setLanguage'])->name('blink.set_language');
+
 
 Route::get('/{emp_code}', function ($emp_code) {
     // Check if employee exists to be safe
@@ -25,7 +32,9 @@ Route::get('/{emp_code}', function ($emp_code) {
     }
     return view('blink_test_app', [
         'emp_code' => $emp_code,
-        'emp_name' => $employee ? $employee->name : null
+        'emp_name' => $employee ? $employee->name : null,
+        'all_translations' => \App\Models\AppTranslation::getAll(),
+        'all_symptoms' => \App\Models\CvsSymptom::getAllGrouped()
     ]);
 });
 

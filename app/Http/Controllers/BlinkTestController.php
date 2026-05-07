@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BlinkTest;
+use App\Models\CvsScreening;
 use Carbon\Carbon;
 
 class BlinkTestController extends Controller
@@ -21,6 +22,27 @@ class BlinkTestController extends Controller
         ]);
 
         return response()->json(['success' => true, 'test' => $test]);
+    }
+
+    public function storeCvs(Request $request)
+    {
+        $request->validate([
+            'emp_code' => 'required|string',
+            'blink_test_id' => 'nullable|integer',
+            'symptom_data' => 'required|array',
+            'total_score' => 'required|integer',
+            'has_cvs' => 'required|boolean',
+        ]);
+
+        $screening = CvsScreening::create([
+            'emp_code' => $request->emp_code,
+            'blink_test_id' => $request->blink_test_id,
+            'symptom_data' => $request->symptom_data,
+            'total_score' => $request->total_score,
+            'has_cvs' => $request->has_cvs,
+        ]);
+
+        return response()->json(['success' => true, 'screening' => $screening]);
     }
 
     public function dashboardStats(Request $request)
@@ -52,5 +74,18 @@ class BlinkTestController extends Controller
             'total' => $totalTests,
             'history' => $history
         ]);
+    }
+
+    public function getTestDetail(Request $request, $id)
+    {
+        $test = BlinkTest::with(['employee', 'cvs'])->findOrFail($id);
+
+        // Security: only the SO who owns this test can view it
+        $soId = $request->query('so_id');
+        if ($soId && $test->emp_code !== $soId) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json(['success' => true, 'test' => $test]);
     }
 }
