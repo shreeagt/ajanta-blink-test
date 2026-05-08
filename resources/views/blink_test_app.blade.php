@@ -245,10 +245,9 @@
 
 <div class="app-shell">
     <div id="splash-screen" style="position: fixed; inset: 0; background: var(--primary-gradient); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;">
-        <div style="width: 100px; height: 100px; background: white; border-radius: 30px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 45px; margin-bottom: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: pulse-soft 2s infinite;">
-            <i class="fas fa-eye-slash"></i>
+        <div style="width: 120px; height: 120px; background: white; border-radius: 35px; display: flex; align-items: center; justify-content: center; box-shadow: 0 25px 60px rgba(0,0,0,0.25); margin-bottom: 25px; animation: pulse-soft 2s infinite;">
+            <img src="/assets/img/ajanta-harma-logo.png" alt="Ajanta Pharma" style="width: 80%; height: auto; object-fit: contain;">
         </div>
-        <h1 style="font-size: 24px; font-weight: 900; letter-spacing: 1px; margin: 0;">AJANTA BLINK</h1>
         <div style="margin-top: 30px; width: 40px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 10px; overflow: hidden;">
             <div style="width: 100%; height: 100%; background: white; animation: loading-bar 1.5s infinite ease-in-out;"></div>
         </div>
@@ -257,8 +256,10 @@
 
     <div id="toast" class="toast"></div>
 
-    <div class="header" id="app-header" style="display:none; border-bottom: none; background: #005eb8; color: white; flex-shrink: 0; position: sticky; top: 0; left: 0; width: 100%; z-index: 1000; height: 90px;">
-        <div class="header-logo" style="color: white; font-weight: 800; font-size: 18px; padding-left: 5px;"><i class="fas fa-eye"></i> Ajanta Blink</div>
+    <div class="header" id="app-header" style="display:none; border-bottom: none; background: #005eb8; color: white; flex-shrink: 0; position: sticky; top: 0; left: 0; width: 100%; z-index: 1000; height: 90px; padding: 0 15px;">
+        <div class="header-logo">
+            <img src="/assets/img/ajanta-harma-logo.png" alt="Ajanta Pharma" style="height: 42px; width: auto; display: block; filter: brightness(0) invert(1);">
+        </div>
         <div class="header-actions">
             <div onclick="openLanguageModal()" class="header-icon-btn" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); color: white;">
                 <i class="fas fa-globe"></i>
@@ -532,83 +533,81 @@
         </div>
     </div>
 
-        <!-- Premium Medical Certificate Template -->
-    <div id="pdf-template" style="display: none; width: 210mm; padding: 15mm; background: #fff; font-family: 'Plus Jakarta Sans', sans-serif; color: #0f172a; position: relative; border: 15px solid #005eb8;">
-        <!-- Watermark -->
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 150px; color: rgba(0,94,184,0.03); font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 0;">AJANTA PHARMA</div>
+        <!-- Medical Certificate Template (Final One-Page Fix) -->
+    <div id="pdf-template" style="display: none; width: 210mm; height: 296mm; background: #fff; font-family: 'Plus Jakarta Sans', sans-serif; color: #0f172a; position: relative; overflow: hidden; box-sizing: border-box;">
+        
+        <!-- Branded Frames (Strictly Internal) -->
+        <div style="position: absolute; top: 8mm; left: 8mm; right: 8mm; bottom: 8mm; border: 6px solid #005eb8; z-index: 1; pointer-events: none;"></div>
+        <div style="position: absolute; top: 11mm; left: 11mm; right: 11mm; bottom: 11mm; border: 2px solid #005eb8; z-index: 1; pointer-events: none;"></div>
+        
+        <!-- Content Wrapper -->
+        <div style="position: absolute; top: 25mm; left: 22mm; right: 22mm; bottom: 22mm; z-index: 5; display: flex; flex-direction: column;">
+            
+            <!-- Watermark (Inside Wrapper for proper centering) -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 130px; color: rgba(0,94,184,0.03); font-weight: 900; pointer-events: none; white-space: nowrap; z-index: -1;">AJANTA PHARMA</div>
 
-        <div style="position: relative; z-index: 1; border: 2px solid #005eb8; padding: 30px; height: 100%;">
             <!-- Header -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #e2e8f0; padding-bottom: 25px; margin-bottom: 30px;">
-                <div>
-                    <h1 style="color: #005eb8; font-size: 42px; font-weight: 900; margin: 0; letter-spacing: -2px;">AJANTA</h1>
-                    <p style="font-size: 14px; font-weight: 800; color: #64748b; margin: 5px 0 0; text-transform: uppercase; letter-spacing: 2px;">Ophthalmic Care Division</p>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="width: 140px;">
+                    <img src="/assets/img/ajanta-harma-logo.png" style="width: 100%; height: auto; display: block; margin-bottom: 5px;">
+                    <p style="font-size: 11px; font-weight: 800; color: #64748b; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Ophthalmic Care Division</p>
                 </div>
                 <div style="text-align: right;">
-                    <div style="background: #005eb8; color: white; padding: 10px 25px; border-radius: 10px; font-size: 16px; font-weight: 900; display: inline-block; margin-bottom: 10px;">EYE HEALTH CERTIFICATE</div>
-                    <p style="font-size: 12px; color: #94a3b8; font-weight: 700; margin: 0;">Certificate No: <span id="pdf-report-id" style="color: #1e293b;">-</span></p>
-                    <p style="font-size: 12px; color: #94a3b8; font-weight: 700; margin: 5px 0 0;">Issue Date: <span id="pdf-date" style="color: #1e293b;">-</span></p>
+                    <div style="background: #005eb8; color: white; padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 900; display: inline-block; margin-bottom: 8px;">EYE HEALTH CERTIFICATE</div>
+                    <p style="font-size: 11px; color: #94a3b8; font-weight: 700; margin: 0;">No: <span id="pdf-report-id" style="color: #1e293b;">-</span></p>
+                    <p style="font-size: 11px; color: #94a3b8; font-weight: 700; margin: 3px 0 0;">Date: <span id="pdf-date" style="color: #1e293b;">-</span></p>
                 </div>
             </div>
 
             <!-- Subject Info -->
-            <div style="background: #f8fafc; padding: 25px; border-radius: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; border: 1px solid #e2e8f0;">
+            <div style="background: #f8fafc; padding: 18px; border-radius: 12px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 15px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
                 <div>
-                    <p style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Screening Facilitated By</p>
-                    <p style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 0;" id="pdf-so-name">-</p>
+                    <p style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 3px;">Facilitated By</p>
+                    <p style="font-size: 15px; font-weight: 800; color: #0f172a; margin: 0;" id="pdf-so-name">-</p>
                 </div>
                 <div style="text-align: right;">
-                    <p style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Screening Location</p>
-                    <p style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 0;">Digital Diagnostics Hub</p>
+                    <p style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 3px;">Location</p>
+                    <p style="font-size: 15px; font-weight: 800; color: #0f172a; margin: 0;">Digital Diagnostics Hub</p>
                 </div>
             </div>
 
             <!-- Results Grid -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
-                <!-- Blink Result -->
-                <div style="border: 2px solid #e2e8f0; border-radius: 25px; padding: 30px; text-align: center;">
-                    <div style="width: 50px; height: 50px; background: #eff6ff; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #005eb8; font-size: 24px; margin: 0 auto 15px;">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <p style="font-size: 13px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 10px;">Blink Rate Analysis</p>
-                    <div style="font-size: 56px; font-weight: 900; color: #0f172a; line-height: 1;"><span id="pdf-blink-count">0</span></div>
-                    <p style="font-size: 12px; font-weight: 700; color: #94a3b8; margin-top: 5px;">Blinks per Minute</p>
-                    <div id="pdf-tier-badge" style="margin-top: 15px; padding: 8px 20px; border-radius: 50px; font-size: 14px; font-weight: 900; text-transform: uppercase; display: inline-block;">-</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                <div style="border: 2px solid #e2e8f0; border-radius: 15px; padding: 20px; text-align: center;">
+                    <p style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">Blink Rate</p>
+                    <div style="font-size: 48px; font-weight: 900; color: #0f172a; line-height: 1;"><span id="pdf-blink-count">0</span></div>
+                    <p style="font-size: 10px; font-weight: 700; color: #94a3b8; margin-top: 3px;">Blinks per Minute</p>
+                    <div id="pdf-tier-badge" style="margin-top: 10px; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; display: inline-block;">-</div>
                 </div>
 
-                <!-- CVS Result -->
-                <div style="border: 2px solid #e2e8f0; border-radius: 25px; padding: 30px; text-align: center;">
-                    <div style="width: 50px; height: 50px; background: #fff7ed; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #f97316; font-size: 24px; margin: 0 auto 15px;">
-                        <i class="fas fa-desktop"></i>
-                    </div>
-                    <p style="font-size: 13px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 10px;">CVS Symptom Score</p>
-                    <div style="font-size: 56px; font-weight: 900; color: #0f172a; line-height: 1;"><span id="pdf-cvs-score">0</span></div>
-                    <p style="font-size: 12px; font-weight: 700; color: #94a3b8; margin-top: 5px;">Out of 32 Score</p>
-                    <div id="pdf-cvs-tier" style="margin-top: 15px; padding: 8px 20px; border-radius: 50px; font-size: 14px; font-weight: 900; text-transform: uppercase; display: inline-block; background: #005e8b; color: white;">-</div>
+                <div style="border: 2px solid #e2e8f0; border-radius: 15px; padding: 20px; text-align: center;">
+                    <p style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">CVS Score</p>
+                    <div style="font-size: 48px; font-weight: 900; color: #0f172a; line-height: 1;"><span id="pdf-cvs-score">0</span></div>
+                    <p style="font-size: 10px; font-weight: 700; color: #94a3b8; margin-top: 3px;">Out of 32 Score</p>
+                    <div id="pdf-cvs-tier" style="margin-top: 10px; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; display: inline-block; background: #005e8b; color: white;">-</div>
                 </div>
             </div>
 
             <!-- Medical Insight -->
-            <div style="background: #eff6ff; padding: 30px; border-radius: 25px; border: 1px solid #bfdbfe; margin-bottom: 40px;">
-                <h4 style="font-size: 16px; font-weight: 900; color: #1e3a8a; margin: 0 0 10px; display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-info-circle"></i> Professional Assessment Summary
+            <div style="background: #eff6ff; padding: 22px; border-radius: 15px; border: 1px solid #bfdbfe; margin-bottom: 25px; flex: 1;">
+                <h4 style="font-size: 14px; font-weight: 900; color: #1e3a8a; margin: 0 0 8px; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-info-circle"></i> Assessment Summary
                 </h4>
-                <p id="pdf-analysis" style="font-size: 14px; color: #1e3a8a; font-weight: 600; line-height: 1.6; margin: 0;"></p>
-                <p id="pdf-cvs-analysis" style="font-size: 14px; color: #1e3a8a; font-weight: 600; line-height: 1.6; margin: 10px 0 0;"></p>
+                <p id="pdf-analysis" style="font-size: 12.5px; color: #1e3a8a; font-weight: 600; line-height: 1.5; margin: 0;"></p>
+                <p id="pdf-cvs-analysis" style="font-size: 12.5px; color: #1e3a8a; font-weight: 600; line-height: 1.5; margin: 8px 0 0;"></p>
             </div>
 
             <!-- Footer -->
-            <div style="border-top: 2px solid #e2e8f0; padding-top: 30px; display: flex; justify-content: space-between; align-items: flex-end;">
-                <div style="max-width: 450px;">
-                    <p style="font-size: 11px; font-weight: 800; color: #0f172a; margin-bottom: 5px;">Disclaimer:</p>
-                    <p style="font-size: 10px; color: #94a3b8; line-height: 1.5; margin: 0;">This digital screening is an awareness initiative by Ajanta Pharma. It provides a preliminary evaluation of eye health parameters and is not a substitute for clinical diagnosis. Consult an eye specialist for a comprehensive check-up.</p>
+            <div style="border-top: 1px solid #e2e8f0; padding-top: 15px; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div style="max-width: 380px;">
+                    <p style="font-size: 10px; font-weight: 800; color: #0f172a; margin-bottom: 3px;">Disclaimer:</p>
+                    <p style="font-size: 8.5px; color: #94a3b8; line-height: 1.4; margin: 0;">This screening is a dry eye awareness initiative by Ajanta Pharma. It is not a medical diagnosis. For persistent symptoms, please consult a qualified ophthalmologist.</p>
                 </div>
                 <div style="text-align: right;">
-                    <div style="margin-bottom: 15px;">
-                        <img src="/assets/img/cvs-logo.png" style="height: 25px; opacity: 0.5;">
+                    <div style="margin-bottom: 8px; display: flex; justify-content: flex-end; gap: 15px; align-items: center;">
+                        <img src="/assets/img/cvs-logo.png" style="height: 20px; opacity: 0.6;">
+                        <img src="/assets/img/ajanta-harma-logo.png" style="height: 32px; opacity: 0.8;">
                     </div>
-                    <p style="font-size: 14px; font-weight: 900; color: #005eb8; margin: 0;">AJANTA PHARMA LTD.</p>
-                    <p style="font-size: 11px; color: #94a3b8; font-weight: 700;">Vision for a Healthier World</p>
                 </div>
             </div>
         </div>
@@ -641,15 +640,15 @@
                 </div>
             </div>
 
-            <!-- WhatsApp Sharing Section -->
-            <div style="margin-top: 20px; padding: 30px; background: #fff; border-radius: 35px; box-shadow: var(--shadow-xl); border: 1px solid #f1f5f9; text-align: center;">
-                <div style="display: inline-flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px;">
-                    <div style="width: 50px; height: 50px; background: #25d366; color: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 8px 20px rgba(37,211,102,0.3);">
+            <!-- Optimized WhatsApp Sharing Section -->
+            <div style="margin-top: 20px; padding: 25px; background: #fff; border-radius: 30px; box-shadow: var(--shadow-xl); border: 1px solid #f1f5f9; text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px;">
+                    <div style="font-size: 35px; color: #25d366;">
                         <i class="fab fa-whatsapp"></i>
                     </div>
                     <div style="text-align: left;">
-                        <h3 style="font-size: 18px; font-weight: 900; color: #1e293b; margin: 0;">WhatsApp Report</h3>
-                        <p style="font-size: 12px; color: #64748b; font-weight: 700; margin: 0;">Fast & Secure Sharing</p>
+                        <h3 style="font-size: 17px; font-weight: 900; color: #1e293b; margin: 0;">Share Report</h3>
+                        <p style="font-size: 12px; color: #64748b; font-weight: 700; margin: 0;">Via Official WhatsApp</p>
                     </div>
                 </div>
                 
@@ -657,10 +656,10 @@
                     <div style="position: relative;">
                         <span style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-weight: 900; color: #166534; font-size: 16px;">+91</span>
                         <input type="tel" id="whatsapp-num" placeholder="Mobile Number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                            style="width: 100%; height: 60px; border-radius: 20px; border: 2px solid #f1f5f9; background: #f8fafc; padding: 0 15px 0 55px; font-size: 17px; font-weight: 700; outline: none; color: #1e293b; transition: 0.3s;">
+                            style="width: 100%; height: 56px; border-radius: 18px; border: 2px solid #f1f5f9; background: #f8fafc; padding: 0 15px 0 55px; font-size: 16px; font-weight: 700; outline: none; color: #1e293b;">
                     </div>
-                    <button onclick="shareToWhatsApp()" style="width: 100%; height: 64px; background: #25d366; color: white; border: none; border-radius: 20px; font-size: 17px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 25px rgba(37,211,102,0.25);">
-                        Send Now <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
+                    <button onclick="shareToWhatsApp()" style="width: 100%; height: 60px; background: #25d366; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 8px 20px rgba(37,211,102,0.2);">
+                         Send Now
                     </button>
                 </div>
             </div>
@@ -1119,6 +1118,12 @@
         lang: sessionStorage.getItem('lang') || null
     };
 
+    // Helper to add 5:30 to any date for display
+    function getIST(dateInput) {
+        const d = dateInput ? new Date(dateInput) : new Date();
+        return new Date(d.getTime() + (5.5 * 60 * 60 * 1000));
+    }
+
     function shareMyLink() {
         const url = window.location.origin + '/' + (state.empCode || '');
         if (navigator.share) {
@@ -1381,7 +1386,7 @@
                         <div class="history-info" style="overflow: hidden;">
                             <h4 style="margin: 0; font-size: 14px; font-weight: 800; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-t="blink_screening_label">${t("blink_screening_label")}</h4>
                             <div style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
-                                <p style="margin: 0; font-size: 11px; color: var(--text-sub); font-weight: 600;">${new Date(item.created_at).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'})}</p>
+                                <p style="margin: 0; font-size: 11px; color: var(--text-sub); font-weight: 600;">${getIST(item.created_at).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'})}</p>
                                 <span style="width: 3px; height: 3px; background: #cbd5e1; border-radius: 50%;"></span>
                                 <p style="margin: 0; font-size: 11px; font-weight: 700; color: ${item.doctor ? 'var(--primary)' : '#94a3b8'}; text-transform: uppercase; letter-spacing: 0.3px;">
                                     ${item.doctor ? item.doctor.name : 'Doctor Pending'}
@@ -1558,7 +1563,7 @@
         if(resBlinkEl) resBlinkEl.innerText = oneMinuteCount;
         
         const resDateEl = document.getElementById('result-report-date');
-        if(resDateEl) resDateEl.innerText = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
+        if(resDateEl) resDateEl.innerText = getIST().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
         
         const reportSoEl = document.getElementById('report-so-name');
         if(reportSoEl && state.empName) reportSoEl.innerText = state.empName;
@@ -1601,6 +1606,7 @@
         state.blinkCount = oneMinuteCount;
         state.blinkTier = resObj.tier;
         state.blinkStatus = resObj.status;
+        state.blinkAnalysisText = resObj.analysis;
 
         fetch(`{{ route('blink_test.save') }}`, {
             method: 'POST',
@@ -1619,7 +1625,7 @@
         const cvsScore = state.cvsScore || '0';
 
         document.getElementById('pdf-blink-count').innerText = blinkCount;
-        document.getElementById('pdf-date').innerText = new Date().toLocaleDateString('en-GB');
+        document.getElementById('pdf-date').innerText = getIST().toLocaleDateString('en-GB');
         document.getElementById('pdf-so-name').innerText = state.empName || state.empCode;
         document.getElementById('pdf-report-id').innerText = 'CERT-' + new Date().getTime().toString().substr(-6);
         
@@ -1632,9 +1638,15 @@
         const pdfCvsTier = document.getElementById('pdf-cvs-tier');
         if(pdfCvsTier) pdfCvsTier.innerText = state.cvsTier || '---';
 
+        const pdfAnalyse = document.getElementById('pdf-analysis');
+        if(pdfAnalyse) pdfAnalyse.innerText = state.blinkAnalysisText || 'Screening results suggest a baseline evaluation. Maintain regular eye hygiene and take frequent breaks during digital device usage.';
+
+        const pdfCvsAnalyse = document.getElementById('pdf-cvs-analysis');
+        if(pdfCvsAnalyse) pdfCvsAnalyse.innerText = state.cvsAnalysisText || 'CVS results indicate digital usage parameters. Consult an eye care professional if symptoms like irritation or blurring persist.';
+
         element.style.display = 'block'; 
         const opt = {
-            margin: 10,
+            margin: 0,
             filename: `Ajanta_Eye_Health_${state.empCode}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
@@ -1684,7 +1696,7 @@
                 detailTestData = t;
                 const scaledCount = t.blink_count;
                 const sid = 'SID-' + String(t.id).padStart(6, '0');
-                const date = new Date(t.created_at).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+                const date = getIST(t.created_at).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
 
                 let tier, status, analysis, tierColor;
                 if (scaledCount <= 6)       { tier='Optimal'; status='Highly stable tear film'; analysis='Excellent eye lubrication. Your blink rate is very healthy.'; tierColor='#10b981'; }
@@ -1893,6 +1905,7 @@
         }
 
         state.cvsTier = tier;
+        state.cvsAnalysisText = desc;
         document.getElementById('cvs-final-score').innerText = score;
         document.getElementById('cvs-tier-badge').innerText = tier;
         document.getElementById('cvs-status-title').innerText = title;
