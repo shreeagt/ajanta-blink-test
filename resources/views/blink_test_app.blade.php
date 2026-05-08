@@ -532,101 +532,87 @@
         </div>
     </div>
 
-        <!-- Hidden PDF Template for Premium Export -->
-        <div id="pdf-template" style="display: none; width: 210mm; padding: 20mm; background: white; font-family: 'Plus Jakarta Sans', sans-serif; color: #0f172a;">
+        <!-- Premium Medical Certificate Template -->
+    <div id="pdf-template" style="display: none; width: 210mm; padding: 15mm; background: #fff; font-family: 'Plus Jakarta Sans', sans-serif; color: #0f172a; position: relative; border: 15px solid #005eb8;">
+        <!-- Watermark -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 150px; color: rgba(0,94,184,0.03); font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 0;">AJANTA PHARMA</div>
+
+        <div style="position: relative; z-index: 1; border: 2px solid #005eb8; padding: 30px; height: 100%;">
             <!-- Header -->
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #e2e8f0; padding-bottom: 25px; margin-bottom: 30px;">
                 <div>
-                    <h1 style="color: var(--primary); font-size: 32px; font-weight: 900; margin: 0;">AJANTA</h1>
-                    <p style="font-size: 14px; font-weight: 700; color: #64748b; margin: 5px 0 0;">Blink Test Awareness Campaign</p>
+                    <h1 style="color: #005eb8; font-size: 42px; font-weight: 900; margin: 0; letter-spacing: -2px;">AJANTA</h1>
+                    <p style="font-size: 14px; font-weight: 800; color: #64748b; margin: 5px 0 0; text-transform: uppercase; letter-spacing: 2px;">Ophthalmic Care Division</p>
                 </div>
                 <div style="text-align: right;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: #1e293b; margin: 0;">BLINK ANALYSIS REPORT</h2>
-                    <p style="font-size: 12px; color: #94a3b8; font-weight: 600; margin: 5px 0 0;">Date: <span id="pdf-date"></span></p>
+                    <div style="background: #005eb8; color: white; padding: 10px 25px; border-radius: 10px; font-size: 16px; font-weight: 900; display: inline-block; margin-bottom: 10px;">EYE HEALTH CERTIFICATE</div>
+                    <p style="font-size: 12px; color: #94a3b8; font-weight: 700; margin: 0;">Certificate No: <span id="pdf-report-id" style="color: #1e293b;">-</span></p>
+                    <p style="font-size: 12px; color: #94a3b8; font-weight: 700; margin: 5px 0 0;">Issue Date: <span id="pdf-date" style="color: #1e293b;">-</span></p>
                 </div>
             </div>
 
-            <!-- Patient/SO Info -->
-            <div style="display: flex; gap: 40px; margin-bottom: 40px; background: #f8fafc; padding: 20px; border-radius: 15px;">
-                <div style="flex: 1;">
-                    <p style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Screening Location</p>
-                    <p style="font-size: 14px; font-weight: 700; color: #1e293b; margin: 0;">Local Field Screening Hub</p>
-                </div>
-                <div style="flex: 1;">
-                    <p style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Representative</p>
-                    <p style="font-size: 14px; font-weight: 700; color: #1e293b; margin: 0;" id="pdf-so-name">-</p>
-                </div>
-                <div style="flex: 1;">
-                    <p style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Report ID</p>
-                    <p style="font-size: 14px; font-weight: 700; color: #1e293b; margin: 0;" id="pdf-report-id">-</p>
-                </div>
-            </div>
-
-            <!-- Result Section -->
-            <div style="display: flex; gap: 30px; align-items: flex-start; margin-bottom: 50px;">
-                <div style="width: 200px; height: 200px; background: #eff6ff; border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #bfdbfe;">
-                    <p style="font-size: 12px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 5px;">Blink Count</p>
-                    <div style="font-size: 72px; font-weight: 900; color: #0f172a;" id="pdf-blink-count">0</div>
-                    <p style="font-size: 12px; font-weight: 700; color: #64748b;">(per minute)</p>
-                </div>
-                <div style="flex: 1; padding-top: 20px;">
-                    <div id="pdf-tier-badge" style="display: inline-block; padding: 10px 25px; border-radius: 50px; font-size: 24px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px;">-</div>
-                    <h3 id="pdf-status" style="font-size: 20px; font-weight: 800; color: #1e293b; margin-bottom: 15px;">-</h3>
-                    <p id="pdf-analysis" style="font-size: 15px; color: #475569; font-weight: 600; line-height: 1.6;"></p>
-                </div>
-            </div>
-
-            
-            <!-- CVS Section -->
-            <div style="display: flex; gap: 30px; align-items: flex-start; margin-bottom: 50px;">
-                <div style="width: 200px; height: 200px; background: #f0f9ff; border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #e0f2fe;">
-                    <img src="/assets/img/cvs-logo.png" alt="CVS Logo" style="height: 25px; margin-bottom: 15px;">
-                    <p style="font-size: 12px; font-weight: 800; color: #005e8b; text-transform: uppercase; margin-bottom: 5px;">CVS Score</p>
-                    <div style="font-size: 72px; font-weight: 900; color: #005e8b;" id="pdf-cvs-score">0</div>
-                    <p style="font-size: 12px; font-weight: 700; color: #64748b;">(out of 32)</p>
-                </div>
-                <div style="flex: 1; padding-top: 20px;">
-                    <div id="pdf-cvs-tier" style="display: inline-block; padding: 10px 25px; border-radius: 50px; font-size: 24px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; background: #005e8b; color: white;">-</div>
-                    <h3 id="pdf-cvs-status" style="font-size: 20px; font-weight: 800; color: #1e293b; margin-bottom: 15px;">-</h3>
-                    <p id="pdf-cvs-analysis" style="font-size: 15px; color: #475569; font-weight: 600; line-height: 1.6;"></p>
-                </div>
-            </div>
-
-            <!-- Visual Scale (Health Bar) -->
-            <div style="margin-bottom: 60px;">
-                <h4 style="font-size: 14px; font-weight: 800; color: #1e293b; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px;">Blink Rate Comparison Scale</h4>
-                <div style="position: relative; height: 40px; background: #f1f5f9; border-radius: 20px; display: flex; overflow: hidden; border: 1px solid #e2e8f0;">
-                    <div style="flex: 6; background: #10b981; display: flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: 800; border-right: 1px solid rgba(255,255,255,0.3);">OPTIMAL</div>
-                    <div style="flex: 4; background: #34d399; display: flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: 800; border-right: 1px solid rgba(255,255,255,0.3);">EXCELLENT</div>
-                    <div style="flex: 3; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: 800; border-right: 1px solid rgba(255,255,255,0.3);">HEALTHY</div>
-                    <div style="flex: 3; background: #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: 800; border-right: 1px solid rgba(255,255,255,0.3);">MILD</div>
-                    <div style="flex: 2; background: #f97316; display: flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: 800; border-right: 1px solid rgba(255,255,255,0.3);">MODERATE</div>
-                    <div style="flex: 2; background: #ef4444; display: flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: 800;">HIGH</div>
-                </div>
-                <div style="position: relative; margin-top: 10px;">
-                    <!-- Indicator Triangle -->
-                    <div id="pdf-indicator" style="position: absolute; top: -55px; left: 50%; transform: translateX(-50%); text-align: center;">
-                        <div style="width: 2px; height: 50px; background: #0f172a; margin: 0 auto;"></div>
-                        <div style="font-size: 11px; font-weight: 900; color: #0f172a; background: white; padding: 2px 8px; border: 2px solid #0f172a; border-radius: 5px; margin-top: 2px;">YOUR SCORE</div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; color: #94a3b8; padding: 0 10px; margin-top: 5px;">
-                        <span>3</span><span>7</span><span>11</span><span>14</span><span>17</span><span>19</span><span>20+</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer / Disclaimer -->
-            <div style="border-top: 1px solid #e2e8f0; padding-top: 30px; display: flex; justify-content: space-between; align-items: flex-end;">
-                <div style="max-width: 400px;">
-                    <p style="font-size: 10px; font-weight: 700; color: #1e293b; margin-bottom: 5px;">Disclaimer:</p>
-                    <p style="font-size: 9px; color: #94a3b8; line-height: 1.5; margin: 0;">This report is generated by an AI-assisted blink analysis tool and is intended for preliminary screening purposes only. It is not a clinical diagnosis. Please consult a qualified ophthalmologist for a complete ocular health evaluation.</p>
+            <!-- Subject Info -->
+            <div style="background: #f8fafc; padding: 25px; border-radius: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; border: 1px solid #e2e8f0;">
+                <div>
+                    <p style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Screening Facilitated By</p>
+                    <p style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 0;" id="pdf-so-name">-</p>
                 </div>
                 <div style="text-align: right;">
-                    <p style="font-size: 12px; font-weight: 800; color: var(--primary);">AJANTA PHARMA LTD.</p>
-                    <p style="font-size: 10px; color: #94a3b8; font-weight: 600;">Committed to Eye Health Worldwide</p>
+                    <p style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Screening Location</p>
+                    <p style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 0;">Digital Diagnostics Hub</p>
+                </div>
+            </div>
+
+            <!-- Results Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+                <!-- Blink Result -->
+                <div style="border: 2px solid #e2e8f0; border-radius: 25px; padding: 30px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: #eff6ff; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #005eb8; font-size: 24px; margin: 0 auto 15px;">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <p style="font-size: 13px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 10px;">Blink Rate Analysis</p>
+                    <div style="font-size: 56px; font-weight: 900; color: #0f172a; line-height: 1;"><span id="pdf-blink-count">0</span></div>
+                    <p style="font-size: 12px; font-weight: 700; color: #94a3b8; margin-top: 5px;">Blinks per Minute</p>
+                    <div id="pdf-tier-badge" style="margin-top: 15px; padding: 8px 20px; border-radius: 50px; font-size: 14px; font-weight: 900; text-transform: uppercase; display: inline-block;">-</div>
+                </div>
+
+                <!-- CVS Result -->
+                <div style="border: 2px solid #e2e8f0; border-radius: 25px; padding: 30px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: #fff7ed; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #f97316; font-size: 24px; margin: 0 auto 15px;">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <p style="font-size: 13px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 10px;">CVS Symptom Score</p>
+                    <div style="font-size: 56px; font-weight: 900; color: #0f172a; line-height: 1;"><span id="pdf-cvs-score">0</span></div>
+                    <p style="font-size: 12px; font-weight: 700; color: #94a3b8; margin-top: 5px;">Out of 32 Score</p>
+                    <div id="pdf-cvs-tier" style="margin-top: 15px; padding: 8px 20px; border-radius: 50px; font-size: 14px; font-weight: 900; text-transform: uppercase; display: inline-block; background: #005e8b; color: white;">-</div>
+                </div>
+            </div>
+
+            <!-- Medical Insight -->
+            <div style="background: #eff6ff; padding: 30px; border-radius: 25px; border: 1px solid #bfdbfe; margin-bottom: 40px;">
+                <h4 style="font-size: 16px; font-weight: 900; color: #1e3a8a; margin: 0 0 10px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-info-circle"></i> Professional Assessment Summary
+                </h4>
+                <p id="pdf-analysis" style="font-size: 14px; color: #1e3a8a; font-weight: 600; line-height: 1.6; margin: 0;"></p>
+                <p id="pdf-cvs-analysis" style="font-size: 14px; color: #1e3a8a; font-weight: 600; line-height: 1.6; margin: 10px 0 0;"></p>
+            </div>
+
+            <!-- Footer -->
+            <div style="border-top: 2px solid #e2e8f0; padding-top: 30px; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div style="max-width: 450px;">
+                    <p style="font-size: 11px; font-weight: 800; color: #0f172a; margin-bottom: 5px;">Disclaimer:</p>
+                    <p style="font-size: 10px; color: #94a3b8; line-height: 1.5; margin: 0;">This digital screening is an awareness initiative by Ajanta Pharma. It provides a preliminary evaluation of eye health parameters and is not a substitute for clinical diagnosis. Consult an eye specialist for a comprehensive check-up.</p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="margin-bottom: 15px;">
+                        <img src="/assets/img/cvs-logo.png" style="height: 25px; opacity: 0.5;">
+                    </div>
+                    <p style="font-size: 14px; font-weight: 900; color: #005eb8; margin: 0;">AJANTA PHARMA LTD.</p>
+                    <p style="font-size: 11px; color: #94a3b8; font-weight: 700;">Vision for a Healthier World</p>
                 </div>
             </div>
         </div>
+    </div>
 
     <!-- Thank You Screen (for Patients) -->
 
@@ -656,21 +642,25 @@
             </div>
 
             <!-- WhatsApp Sharing Section -->
-            <div style="margin-top: 20px; padding: 25px; background: #f0fdf4; border-radius: 30px; border: 1px solid #dcfce7; text-align: center;">
-                <div style="width: 65px; height: 65px; background: #25d366; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 15px; box-shadow: 0 10px 25px rgba(37,211,102,0.3); border: 3px solid white;">
-                    <i class="fab fa-whatsapp"></i>
-                </div>
-                <h3 style="font-size: 19px; font-weight: 900; color: #166534; margin-bottom: 5px;">Share Report</h3>
-                <p style="font-size: 13px; color: #166534; opacity: 0.8; margin-bottom: 20px;">Enter 10-digit mobile number</p>
-                
-                <div style="display: flex; gap: 10px; flex-direction: column;">
-                    <div style="position: relative;">
-                        <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-weight: 800; color: #166534; font-size: 15px;">+91</span>
-                        <input type="tel" id="whatsapp-num" placeholder="Mobile Number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                            style="width: 100%; height: 55px; border-radius: 15px; border: 2px solid #bbf7d0; padding: 0 15px 0 50px; font-size: 16px; font-weight: 700; outline: none; color: #166534;">
+            <div style="margin-top: 20px; padding: 30px; background: #fff; border-radius: 35px; box-shadow: var(--shadow-xl); border: 1px solid #f1f5f9; text-align: center;">
+                <div style="display: inline-flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px;">
+                    <div style="width: 50px; height: 50px; background: #25d366; color: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 8px 20px rgba(37,211,102,0.3);">
+                        <i class="fab fa-whatsapp"></i>
                     </div>
-                    <button onclick="shareToWhatsApp()" style="width: 100%; height: 55px; background: #25d366; color: white; border: none; border-radius: 15px; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(37,211,102,0.2);">
-                        Share Now <i class="fas fa-paper-plane"></i>
+                    <div style="text-align: left;">
+                        <h3 style="font-size: 18px; font-weight: 900; color: #1e293b; margin: 0;">WhatsApp Report</h3>
+                        <p style="font-size: 12px; color: #64748b; font-weight: 700; margin: 0;">Fast & Secure Sharing</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 12px; flex-direction: column;">
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-weight: 900; color: #166534; font-size: 16px;">+91</span>
+                        <input type="tel" id="whatsapp-num" placeholder="Mobile Number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                            style="width: 100%; height: 60px; border-radius: 20px; border: 2px solid #f1f5f9; background: #f8fafc; padding: 0 15px 0 55px; font-size: 17px; font-weight: 700; outline: none; color: #1e293b; transition: 0.3s;">
+                    </div>
+                    <button onclick="shareToWhatsApp()" style="width: 100%; height: 64px; background: #25d366; color: white; border: none; border-radius: 20px; font-size: 17px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 25px rgba(37,211,102,0.25);">
+                        Send Now <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
                     </button>
                 </div>
             </div>
