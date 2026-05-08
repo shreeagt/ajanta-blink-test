@@ -1297,7 +1297,8 @@
     let testInterval;
     let camera;
     let faceMesh;
-    let blinkThreshold = 0.23;
+    let maxEAR = 0.28; // Dynamic baseline tracker
+    let lastBlinkTime = 0; // Debounce timer
     let eyeClosed = false;
 
     function getEAR(landmarks, indices) {
@@ -1312,21 +1313,39 @@
         const rightEAR = getEAR(landmarks, [33, 160, 158, 133, 153, 144]);
         const avgEAR = (leftEAR + rightEAR) / 2.0;
         
-        if (avgEAR < blinkThreshold) {
+        // 1. Dynamic Baseline Tracking
+        // This adapts to different face shapes and phone angles automatically
+        if (avgEAR > maxEAR) {
+            maxEAR = avgEAR; // Update max if eyes are opened wider
+        } else {
+            maxEAR = maxEAR * 0.995 + avgEAR * 0.005; // Slowly decay maxEAR to adapt to posture changes over time
+        }
+        
+        // 2. Relative Thresholding
+        // A blink is when the eye closes to at least 75% of its fully open state
+        let dynamicThreshold = maxEAR * 0.75;
+        const now = Date.now();
+        
+        if (avgEAR < dynamicThreshold) {
             eyeClosed = true;
         } else if (eyeClosed) {
-            blinkCount++;
-            document.getElementById('live-blink-count').innerText = blinkCount;
+            // 3. Debouncing (Cooldown)
+            // Prevent a single slow blink from being counted multiple times due to micro-fluctuations
+            if (now - lastBlinkTime > 200) { 
+                blinkCount++;
+                document.getElementById('live-blink-count').innerText = blinkCount;
+                lastBlinkTime = now;
+                
+                // Physical Feedback: Vibration
+                if (navigator.vibrate) navigator.vibrate(50);
+                
+                // Visual Feedback: Ripple
+                const ripple = document.getElementById('blink-ripple');
+                ripple.classList.remove('ripple-active');
+                void ripple.offsetWidth; // Trigger reflow
+                ripple.classList.add('ripple-active');
+            }
             eyeClosed = false;
-            
-            // Physical Feedback: Vibration
-            if (navigator.vibrate) navigator.vibrate(50);
-            
-            // Visual Feedback: Ripple
-            const ripple = document.getElementById('blink-ripple');
-            ripple.classList.remove('ripple-active');
-            void ripple.offsetWidth; // Trigger reflow
-            ripple.classList.add('ripple-active');
         }
     }
 
@@ -1338,21 +1357,26 @@
     function startBlinkTest() {
         navigate('scr-blink-test');
         blinkCount = 0; testTimer = 15; eyeClosed = false;
+        maxEAR = 0.28; lastBlinkTime = 0;
         document.getElementById('live-blink-count').innerText = "0";
         document.getElementById('test-timer').innerText = "15";
         document.getElementById('test-status-msg').innerText = t("init_camera");
         
         if(!faceMesh) {
             faceMesh = new FaceMesh({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`});
-            faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+            faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: false, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 }); // refineLandmarks false for better FPS on mobile
             faceMesh.onResults(onResults);
         }
-        if(!camera) {
-            camera = new Camera(document.getElementById('input_video'), {
-                onFrame: async () => { await faceMesh.send({image: document.getElementById('input_video')}); },
-                width: 640, height: 480
-            });
+        
+        // Always recreate camera to avoid mobile restart issues
+        if(camera) {
+            camera.stop();
         }
+        camera = new Camera(document.getElementById('input_video'), {
+            onFrame: async () => { await faceMesh.send({image: document.getElementById('input_video')}); },
+            width: 320, height: 240 // Lower resolution for better frame rate on mobile, crucial for catching quick blinks
+        });
+        
         camera.start().then(() => {
             document.getElementById('test-status-msg').innerText = "Test Started. Focus on the center.";
             document.getElementById('test-status-msg').style.color = "#10b981";
@@ -1370,7 +1394,10 @@
     
     function endBlinkTest() {
         clearInterval(testInterval);
-        if(camera) camera.stop();
+        if(camera) {
+            camera.stop();
+            camera = null; // Force recreation on next test
+        }
         
         const oneMinuteCount = blinkCount * 4;
         const finalCountEl = document.getElementById('final-blink-count');
