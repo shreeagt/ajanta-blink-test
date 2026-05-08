@@ -23,6 +23,10 @@ Route::get('/blink-test/{id}/detail', [\App\Http\Controllers\BlinkTestController
 Route::post('/blink-login', [DoctorPosterController::class, 'login'])->name('blink.login');
 Route::post('/set-language', [DoctorPosterController::class, 'setLanguage'])->name('blink.set_language');
 
+// Doctor Management
+Route::get('/doctors', [\App\Http\Controllers\DoctorController::class, 'index'])->name('doctors.index');
+Route::post('/doctors', [\App\Http\Controllers\DoctorController::class, 'store'])->name('doctors.store');
+
 
 Route::get('/{emp_code}', function ($emp_code) {
     // Check if employee exists to be safe

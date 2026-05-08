@@ -9,7 +9,12 @@ class BlinkTest extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['emp_code', 'blink_count'];
+    protected $fillable = ['emp_code', 'blink_count', 'doctor_id'];
+
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 
     public function employee()
     {

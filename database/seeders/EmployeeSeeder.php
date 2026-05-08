@@ -15,19 +15,19 @@ class EmployeeSeeder extends Seeder
                 'emp_code' => 'TEST001',
                 'name'     => 'Ravi Sharma',
                 'hq'       => 'Mumbai',
-                'password' => Hash::make('Gullak@123'),
+                'password' => Hash::make('Ajanta@123'),
             ],
             [
                 'emp_code' => 'TEST002',
                 'name'     => 'Priya Patel',
                 'hq'       => 'Pune',
-                'password' => Hash::make('Gullak@123'),
+                'password' => Hash::make('Ajanta@123'),
             ],
             [
                 'emp_code' => 'TEST003',
                 'name'     => 'Amit Verma',
                 'hq'       => 'Ahmedabad',
-                'password' => Hash::make('Gullak@123'),
+                'password' => Hash::make('Ajanta@123'),
             ],
         ];
 

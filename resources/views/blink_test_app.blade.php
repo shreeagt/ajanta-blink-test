@@ -10,7 +10,15 @@
         :root {
             --primary: #005eb8;
             --primary-light: #eff6ff;
-            --primary-gradient: linear-gradient(135deg, #005eb8 0%, #003d7a 100%);
+            --primary-gradient: linear-gradient(135deg, #005eb8 0%, #003a70 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --cvs-blue: #005e8b;
+            --cvs-orange: #f37021;
+            --cvs-bg: #f0f9ff;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.03);
+            --shadow-md: 0 10px 25px rgba(0,0,0,0.06);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.08);
+            --shadow-xl: 0 30px 60px rgba(0,0,0,0.12);
             --secondary: #f59e0b;
             --secondary-light: #fffbeb;
             --success: #10b981;
@@ -52,14 +60,12 @@
             .app-shell { min-height: 95vh; border-radius: 40px; margin: 20px auto; }
         }
 
-        .screen { 
-            display: none; 
-            width: 100%; 
-            flex-direction: column; 
-            background: #f8fafc;
-            animation: fadeIn 0.4s ease-out;
-            overflow-y: auto;
-            min-height: 100vh;
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; flex-direction: column; 
+            overflow-y: auto; overflow-x: hidden;
+            background: #f8fafc; z-index: 5;
+            padding-top: 120px;
         }
         .screen.active { display: flex !important; }
         /* Blink test screen fills fully in dark */
@@ -251,7 +257,7 @@
 
     <div id="toast" class="toast"></div>
 
-    <div class="header" id="app-header" style="display:none; border-bottom: none; background: transparent; color: white; flex-shrink: 0; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;">
+    <div class="header" id="app-header" style="display:none; border-bottom: none; background: #005eb8; color: white; flex-shrink: 0; position: sticky; top: 0; left: 0; width: 100%; z-index: 1000; height: 90px;">
         <div class="header-logo" style="color: white; font-weight: 800; font-size: 18px; padding-left: 5px;"><i class="fas fa-eye"></i> Ajanta Blink</div>
         <div class="header-actions">
             <div onclick="openLanguageModal()" class="header-icon-btn" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); color: white;">
@@ -465,65 +471,62 @@
 
     </div>
 
-    <!-- Result Screen -->
-    <div id="scr-test-result" class="screen anim-screen" style="background: #f8fafc; padding: 100px 20px 100px;">
-        <div style="background: white; width: 100%; padding: 35px 24px; border-radius: 40px; box-shadow: var(--shadow-xl); border: 1px solid #fff; position: relative;">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <span style="font-size: 11px; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; background: var(--primary-light); padding: 8px 24px; border-radius: 50px;" data-t="blink_report_title">Blink Analysis Report</span>
-            </div>
-            
-            <div style="text-align: center; margin-bottom: 30px;">
-                <p style="font-size: 13px; color: var(--text-sub); font-weight: 800; margin-bottom: 5px;" data-t="your_score">YOUR SCORE</p>
-                <div style="display: flex; align-items: baseline; justify-content: center; gap: 8px;">
-                    <h2 style="font-size: 80px; font-weight: 900; color: var(--text-main); line-height: 1;" id="scaled-blink-count">0</h2>
-                    <span style="font-size: 20px; font-weight: 800; color: var(--text-sub);">/ min</span>
+    <!-- Result Screen    <!-- After Blink Result -->
+    <div id="scr-test-result" class="screen anim-screen" style="background: #f8fafc;">
+        <div style="max-width: 500px; margin: 0 auto; width: 100%; padding: 0 20px 40px;">
+            <!-- Progress Tracker -->
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 40px;">
+                <div style="width: 35px; height: 35px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; box-shadow: 0 4px 10px rgba(16,185,129,0.2);">
+                    <i class="fas fa-check"></i>
                 </div>
+                <div style="width: 50px; height: 3px; background: #10b981; border-radius: 2px;"></div>
+                <div style="width: 35px; height: 35px; background: white; color: var(--primary); border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; box-shadow: 0 4px 10px rgba(0,94,184,0.1);">2</div>
             </div>
 
-            <div style="margin-bottom: 35px;">
-                <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; color: var(--text-sub); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                    <span>Stability Scale</span>
-                    <span id="report-date"></span>
+            <div style="background: white; padding: 40px 24px; border-radius: 40px; box-shadow: var(--shadow-xl); border: 1px solid #fff; position: relative; overflow: hidden; text-align: center;">
+                <div style="position: absolute; top: -15px; right: -15px; width: 100px; height: 100px; background: rgba(0,94,184,0.03); border-radius: 50%;"></div>
+                
+                <div style="margin-bottom: 25px;">
+                    <span style="font-size: 12px; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; background: var(--primary-light); padding: 10px 30px; border-radius: 50px;" data-t="blink_assessment_result">Blink Analysis Result</span>
                 </div>
-                <div style="position: relative; height: 14px; background: #f1f5f9; border-radius: 20px; display: flex; overflow: hidden; border: 1px solid #e2e8f0;">
-                    <div style="flex: 6; background: #10b981;"></div>
-                    <div style="flex: 4; background: #34d399;"></div>
-                    <div style="flex: 3; background: #38bdf8;"></div>
-                    <div style="flex: 3; background: #fbbf24;"></div>
-                    <div style="flex: 2; background: #f97316;"></div>
-                    <div style="flex: 2; background: #ef4444;"></div>
-                    <div id="result-indicator" style="position: absolute; top: -7px; left: 0%; width: 28px; height: 28px; background: white; border-radius: 50%; border: 6px solid var(--primary); box-shadow: var(--shadow-md); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 35px;">
-                <div id="result-tier-badge" style="display: inline-block; padding: 10px 30px; border-radius: 50px; font-size: 16px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; box-shadow: var(--shadow-md); background: var(--primary); color: white;">Optimal</div>
-                <h3 id="result-status" style="font-size: 22px; font-weight: 900; color: var(--text-main); margin: 0 0 10px 0; line-height: 1.2;">Highly stable tear film</h3>
-                <p id="result-analysis" style="font-size: 15px; color: var(--text-sub); font-weight: 600; line-height: 1.6; margin: 0;">Your blinking pattern indicates excellent moisture retention.</p>
-            </div>
-
-            <!-- WhatsApp Sharing -->
-            <div style="background: #f0fdf4; padding: 22px; border-radius: 28px; border: 1px solid #dcfce7; text-align: left; margin-top: 20px;">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
-                    <div style="width: 40px; height: 40px; background: #25d366; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
-                        <i class="fab fa-whatsapp"></i>
+                
+                <div style="margin-bottom: 35px;">
+                    <p style="font-size: 14px; color: var(--text-sub); font-weight: 800; margin-bottom: 5px;" data-t="blink_count_label">BLINK RATE</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 8px;">
+                        <h2 style="font-size: 85px; font-weight: 900; color: var(--text-main); line-height: 1; margin: 0;" id="result-blink">0</h2>
+                        <span style="font-size: 20px; font-weight: 800; color: var(--text-sub);">/ min</span>
                     </div>
-                    <span style="font-size: 15px; font-weight: 900; color: #166534;">Share with Patient</span>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <input type="tel" id="whatsapp-num" placeholder="WhatsApp Number" style="flex: 1; height: 54px; padding: 0 18px; border-radius: 16px; border: 1.5px solid #bbf7d0; font-size: 15px; font-weight: 700;">
-                    <button onclick="shareToWhatsApp()" style="background: #25d366; color: white; border: none; padding: 0 24px; border-radius: 16px; font-weight: 900; font-size: 15px; box-shadow: 0 8px 15px rgba(37,211,102,0.2);">
-                        Share
-                    </button>
+
+                <div style="margin-bottom: 40px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; color: var(--text-sub); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                        <span data-t="health_scale">Health Scale</span>
+                        <span id="result-report-date"></span>
+                    </div>
+                    <div style="position: relative; height: 16px; background: #f1f5f9; border-radius: 20px; display: flex; overflow: hidden; border: 1px solid #e2e8f0;">
+                        <div style="flex: 6; background: #10b981;"></div>
+                        <div style="flex: 4; background: #34d399;"></div>
+                        <div style="flex: 3; background: #38bdf8;"></div>
+                        <div style="flex: 3; background: #fbbf24;"></div>
+                        <div style="flex: 2; background: #f97316;"></div>
+                        <div style="flex: 2; background: #ef4444;"></div>
+                        <div id="result-indicator" style="position: absolute; top: -6px; left: 0%; width: 28px; height: 28px; background: white; border-radius: 50%; border: 6px solid var(--primary); box-shadow: var(--shadow-md); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <div id="result-tier-badge" style="display: inline-block; padding: 10px 30px; border-radius: 50px; font-size: 16px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; box-shadow: var(--shadow-md); background: var(--primary); color: white;">Optimal</div>
+                    <h3 id="result-status" style="font-size: 22px; font-weight: 900; color: var(--text-main); margin: 0 0 10px 0; line-height: 1.2;">Highly stable tear film</h3>
+                    <p id="result-analysis" style="font-size: 15px; color: var(--text-sub); font-weight: 600; line-height: 1.6; margin: 0;">Your blinking pattern indicates excellent moisture retention.</p>
                 </div>
             </div>
             
-            <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 12px;">
-                <button class="btn btn-primary" onclick="window.startCvsScreening()" style="height: 64px; border-radius: 22px; font-size: 16px; font-weight: 900; background: #f59e0b; box-shadow: 0 10px 25px rgba(245,158,11,0.2);">
-                    Next: CVS Screening <i class="fas fa-arrow-right"></i>
+            <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
+                <button class="btn" onclick="window.startCvsScreening()" style="height: 68px; border-radius: 24px; font-size: 17px; font-weight: 900; background: var(--secondary); color: white; border: none; box-shadow: 0 12px 30px rgba(245,158,11,0.25); display: flex; align-items: center; justify-content: center; gap: 12px;">
+                    Next Step: CVS Screening <i class="fas fa-arrow-right"></i>
                 </button>
-                <button class="btn btn-primary" onclick="window.onTestFinish()" style="height: 64px; border-radius: 22px; font-size: 16px; font-weight: 900;">
-                    <span data-t="finish_close">Finish & Close</span> <i class="fas fa-check-circle"></i>
+                <button class="btn" onclick="window.onTestFinish()" style="background: white; color: #64748b; height: 54px; border-radius: 18px; font-weight: 700; font-size: 14px; border: 1px solid #e2e8f0;">
+                    <span data-t="finish_close">Skip CVS & Finish</span>
                 </button>
             </div>
         </div>
@@ -576,13 +579,14 @@
             
             <!-- CVS Section -->
             <div style="display: flex; gap: 30px; align-items: flex-start; margin-bottom: 50px;">
-                <div style="width: 200px; height: 200px; background: #fffbeb; border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #fef3c7;">
-                    <p style="font-size: 12px; font-weight: 800; color: #d97706; text-transform: uppercase; margin-bottom: 5px;">CVS Score</p>
-                    <div style="font-size: 72px; font-weight: 900; color: #92400e;" id="pdf-cvs-score">0</div>
-                    <p style="font-size: 12px; font-weight: 700; color: #b45309;">(out of 32)</p>
+                <div style="width: 200px; height: 200px; background: #f0f9ff; border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #e0f2fe;">
+                    <img src="/assets/img/cvs-logo.png" alt="CVS Logo" style="height: 25px; margin-bottom: 15px;">
+                    <p style="font-size: 12px; font-weight: 800; color: #005e8b; text-transform: uppercase; margin-bottom: 5px;">CVS Score</p>
+                    <div style="font-size: 72px; font-weight: 900; color: #005e8b;" id="pdf-cvs-score">0</div>
+                    <p style="font-size: 12px; font-weight: 700; color: #64748b;">(out of 32)</p>
                 </div>
                 <div style="flex: 1; padding-top: 20px;">
-                    <div id="pdf-cvs-tier" style="display: inline-block; padding: 10px 25px; border-radius: 50px; font-size: 24px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px;">-</div>
+                    <div id="pdf-cvs-tier" style="display: inline-block; padding: 10px 25px; border-radius: 50px; font-size: 24px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; background: #005e8b; color: white;">-</div>
                     <h3 id="pdf-cvs-status" style="font-size: 20px; font-weight: 800; color: #1e293b; margin-bottom: 15px;">-</h3>
                     <p id="pdf-cvs-analysis" style="font-size: 15px; color: #475569; font-weight: 600; line-height: 1.6;"></p>
                 </div>
@@ -627,54 +631,76 @@
     <!-- Thank You Screen (for Patients) -->
 
 
-    <!-- New Premium Thank You Screen -->
-    <div id="scr-thank-you" class="screen anim-screen" style="background: #f8fafc; padding: 80px 20px 20px;">
-        <div style="background: white; width: 100%; padding: 40px 24px; border-radius: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); border: 1px solid #fff; margin: 0 auto; max-width: 500px;">
-            <div style="text-align: center; margin-bottom: 30px;">
+    <!-- Premium Thank You Screen -->
+    <div id="scr-thank-you" class="screen anim-screen" style="background: #f8fafc; padding: 40px 20px 40px;">
+        <div style="background: white; width: 100%; padding: 40px 24px; border-radius: 40px; box-shadow: var(--shadow-xl); border: 1px solid #fff; margin: 0 auto; max-width: 500px; text-align: center;">
+            <div style="margin-bottom: 30px;">
                 <div style="width: 80px; height: 80px; background: #f0fdf4; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #10b981; font-size: 40px; margin: 0 auto 20px; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1);">
                     <i class="fas fa-check-circle"></i>
                 </div>
-                <h2 style="font-size: 32px; font-weight: 900; color: #0f172a; margin-bottom: 10px;"><span data-t="assessment_complete_title">Assessment Complete</span></h2>
-                <p style="font-size: 16px; color: #64748b; font-weight: 600;" data-t="assessment_complete_desc">Your eye health screening has been securely recorded.</p>
+                <h2 style="font-size: 28px; font-weight: 900; color: #0f172a; margin-bottom: 8px;" data-t="final_summary">Final Summary</h2>
+                <p style="font-size: 15px; color: #64748b; font-weight: 600;" data-t="assessment_complete_desc">Your screening is complete. Here are your results.</p>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 35px;">
-                <div style="background: #eff6ff; padding: 20px; border-radius: 24px; border: 1px solid #dbeafe; text-align: center;">
-                    <p style="font-size: 11px; font-weight: 800; color: #3b82f6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Blink Rate</p>
-                    <div style="font-size: 28px; font-weight: 900; color: #1e3a8a;" id="ty-blink-score">0</div>
-                    <p style="font-size: 12px; font-weight: 700; color: #60a5fa;" id="ty-blink-status">Normal</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                <div style="background: var(--primary-light); padding: 20px; border-radius: 24px; border: 1px solid #dbeafe;">
+                    <p style="font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Blink Rate</p>
+                    <div style="font-size: 32px; font-weight: 900; color: #1e3a8a;" id="ty-blink-score">0</div>
+                    <p style="font-size: 12px; font-weight: 700; color: #3b82f6;" id="ty-blink-status">-</p>
                 </div>
-                <div style="background: #fffbeb; padding: 20px; border-radius: 24px; border: 1px solid #fef3c7; text-align: center;">
-                    <p style="font-size: 11px; font-weight: 800; color: #d97706; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">CVS Score</p>
-                    <div style="font-size: 28px; font-weight: 900; color: #92400e;" id="ty-cvs-score">0</div>
-                    <p style="font-size: 12px; font-weight: 700; color: #f59e0b;" id="ty-cvs-status">Healthy</p>
+                <div style="background: #fffbeb; padding: 20px; border-radius: 24px; border: 1px solid #fef3c7;">
+                    <p style="font-size: 10px; font-weight: 800; color: #d97706; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">CVS Score</p>
+                    <div style="font-size: 32px; font-weight: 900; color: #92400e;" id="ty-cvs-score">0</div>
+                    <p style="font-size: 12px; font-weight: 700; color: #f59e0b;" id="ty-cvs-status">-</p>
+                </div>
+            </div>
+
+            <!-- WhatsApp Sharing Section -->
+            <div style="margin-top: 20px; padding: 25px; background: #f0fdf4; border-radius: 30px; border: 1px solid #dcfce7; text-align: center;">
+                <div style="width: 65px; height: 65px; background: #25d366; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 15px; box-shadow: 0 10px 25px rgba(37,211,102,0.3); border: 3px solid white;">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h3 style="font-size: 19px; font-weight: 900; color: #166534; margin-bottom: 5px;">Share Report</h3>
+                <p style="font-size: 13px; color: #166534; opacity: 0.8; margin-bottom: 20px;">Enter 10-digit mobile number</p>
+                
+                <div style="display: flex; gap: 10px; flex-direction: column;">
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-weight: 800; color: #166534; font-size: 15px;">+91</span>
+                        <input type="tel" id="whatsapp-num" placeholder="Mobile Number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                            style="width: 100%; height: 55px; border-radius: 15px; border: 2px solid #bbf7d0; padding: 0 15px 0 50px; font-size: 16px; font-weight: 700; outline: none; color: #166534;">
+                    </div>
+                    <button onclick="shareToWhatsApp()" style="width: 100%; height: 55px; background: #25d366; color: white; border: none; border-radius: 15px; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(37,211,102,0.2);">
+                        Share Now <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 12px;">
-                <button class="btn" onclick="downloadCombinedPDF()" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; height: 64px; border-radius: 20px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 10px 25px rgba(217, 119, 6, 0.25); border: none;">
-                    <i class="fas fa-award"></i> <span data-t="download_cert">Download Eye Care Certificate</span>
+                <button class="btn" onclick="downloadCombinedPDF()" style="background: var(--primary-gradient); color: white; height: 68px; border-radius: 22px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 12px 25px rgba(0,94,184,0.25); border: none;">
+                    <i class="fas fa-file-pdf"></i> <span data-t="download_cert">Download Eye Health Certificate</span>
                 </button>
                 <button class="btn" onclick="window.location.href='/'" style="background: white; color: #64748b; height: 54px; border-radius: 18px; font-weight: 700; font-size: 14px; border: 1px solid #e2e8f0; margin-top: 10px;">
-                    <span data-t="back_home">Back to Home</span>
+                    <i class="fas fa-redo"></i> <span data-t="start_new_screening">Start New Screening</span>
                 </button>
             </div>
 
-            <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #f1f5f9; text-align: center;">
-                <p style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase;" data-t="rep_id">Representative ID</p>
+            <div style="margin-top: 35px; padding-top: 25px; border-top: 1px solid #f1f5f9;">
+                <p style="font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Screened By</p>
                 <p style="font-size: 15px; font-weight: 800; color: #1e293b;" id="thank-you-so-code">---</p>
             </div>
         </div>
     </div>
 
     <!-- CVS Screening Screen -->
-    <div id="scr-cvs-screening" class="screen" style="background: #f8fafc; padding: 0;">
-        <div style="background: var(--primary-gradient); width: 100%; padding: 100px 24px 50px; border-radius: 0 0 50px 50px; color: white; text-align: center; position: relative; box-shadow: var(--shadow-lg);">
-            <div style="width: 70px; height: 70px; background: rgba(255,255,255,0.15); border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 15px; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2);">
-                <i class="fas fa-laptop-medical"></i>
+    <div id="scr-cvs-screening" class="screen" style="background: var(--primary-gradient);">
+        <div style="width: 100%; padding: 40px 24px 50px; border-radius: 0 0 50px 50px; color: white; text-align: center; position: relative;">
+            <div style="margin-bottom: 25px;">
+                <div style="background: white; display: inline-block; padding: 10px 25px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                    <img src="/assets/img/cvs-logo.png" alt="CVS Logo" style="height: 42px; display: block; margin: 0 auto;">
+                </div>
             </div>
-            <h2 style="font-size: 28px; font-weight: 900; letter-spacing: -1px; margin-bottom: 5px;" data-t="symptom_assessment">Symptom Check</h2>
-            <p style="font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 600;" data-t="cvs_subtitle">CVS Severity Assessment</p>
+            <h2 style="font-size: 28px; font-weight: 900; letter-spacing: -1px; margin-bottom: 10px;">Symptom Assessment</h2>
+            <p style="font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 600;">Please rate your symptoms based on digital device use.</p>
         </div>
 
         <div style="padding: 24px; max-width: 500px; margin: 0 auto; width: 100%;">
@@ -696,42 +722,57 @@
 
 
     <!-- CVS Result Screen -->
-    <div id="scr-cvs-result" class="screen anim-screen" style="background: #f8fafc; padding: 100px 20px 100px;">
-        <div style="background: white; width: 100%; padding: 35px 24px; border-radius: 40px; box-shadow: var(--shadow-xl); border: 1px solid #fff; position: relative;">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <span style="font-size: 11px; font-weight: 900; color: var(--secondary); text-transform: uppercase; letter-spacing: 2px; background: var(--secondary-light); padding: 8px 24px; border-radius: 50px;">CVS Assessment Result</span>
+    <div id="scr-cvs-result" class="screen anim-screen" style="background: var(--cvs-bg);">
+        <div style="max-width: 500px; margin: 0 auto; width: 100%;">
+            <!-- Progress Tracker -->
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 40px;">
+                <div style="width: 32px; height: 32px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div style="width: 40px; height: 2px; background: #10b981; border-radius: 2px;"></div>
+                <div style="width: 32px; height: 32px; background: var(--cvs-blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; box-shadow: 0 4px 10px rgba(0,94,139,0.3);">2</div>
+            </div>
+
+            <div style="background: white; padding: 40px 24px; border-radius: 40px; box-shadow: var(--shadow-xl); border: 1px solid #fff; position: relative; overflow: hidden; text-align: center;">
+                <div style="margin-bottom: 25px;">
+                    <img src="/assets/img/cvs-logo.png" alt="CVS-Q Logo" style="height: 40px; margin: 0 auto; display: block;">
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <span style="font-size: 11px; font-weight: 900; color: var(--cvs-blue); text-transform: uppercase; letter-spacing: 2px; background: #e0f2fe; padding: 8px 24px; border-radius: 50px;" data-t="cvs_assessment_result">CVS Assessment Result</span>
+                </div>
+                
+                <div style="margin-bottom: 35px;">
+                    <p style="font-size: 13px; color: var(--text-sub); font-weight: 800; margin-bottom: 5px;">TOTAL CVS SCORE</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 8px;">
+                        <h2 style="font-size: 80px; font-weight: 900; color: var(--cvs-blue); line-height: 1;" id="cvs-final-score">0</h2>
+                        <span style="font-size: 20px; font-weight: 800; color: var(--text-sub);">/ 32</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 40px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; color: var(--text-sub); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                        <span data-t="severity_scale">Severity Scale</span>
+                        <span id="cvs-report-date"></span>
+                    </div>
+                    <div style="position: relative; height: 16px; background: #f1f5f9; border-radius: 20px; display: flex; overflow: hidden; border: 1px solid #e2e8f0;">
+                        <div style="flex: 6; background: #10b981;"></div>
+                        <div style="flex: 6; background: var(--cvs-orange);"></div>
+                        <div style="flex: 20; background: #ef4444;"></div>
+                        <div id="cvs-result-indicator" style="position: absolute; top: -6px; left: 0%; width: 28px; height: 28px; background: white; border-radius: 50%; border: 6px solid var(--cvs-blue); box-shadow: var(--shadow-md); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <div id="cvs-tier-badge" style="display: inline-block; padding: 10px 30px; border-radius: 50px; font-size: 16px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; box-shadow: var(--shadow-md); background: var(--cvs-blue); color: white;">Moderate</div>
+                    <h3 id="cvs-status-title" style="font-size: 22px; font-weight: 900; color: #0f172a; margin: 0 0 10px 0; line-height: 1.2;">Significant Eye Strain</h3>
+                    <p id="cvs-analysis-text" style="font-size: 15px; color: #64748b; font-weight: 600; line-height: 1.6; margin: 0;">Your score indicates moderate digital eye strain symptoms.</p>
+                </div>
             </div>
             
-            <div style="text-align: center; margin-bottom: 30px;">
-                <p style="font-size: 13px; color: var(--text-sub); font-weight: 800; margin-bottom: 5px;" data-t="freq">TOTAL CVS SCORE</p>
-                <div style="display: flex; align-items: baseline; justify-content: center; gap: 8px;">
-                    <h2 style="font-size: 80px; font-weight: 900; color: var(--text-main); line-height: 1;" id="cvs-final-score">0</h2>
-                    <span style="font-size: 20px; font-weight: 800; color: var(--text-sub);">/ 32</span>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 35px;">
-                <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; color: var(--text-sub); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                    <span>Severity Scale</span>
-                    <span id="cvs-report-date"></span>
-                </div>
-                <div style="position: relative; height: 14px; background: #f1f5f9; border-radius: 20px; display: flex; overflow: hidden; border: 1px solid #e2e8f0;">
-                    <div style="flex: 6; background: #10b981;"></div>
-                    <div style="flex: 12; background: #fbbf24;"></div>
-                    <div style="flex: 14; background: #ef4444;"></div>
-                    <div id="cvs-result-indicator" style="position: absolute; top: -7px; left: 0%; width: 28px; height: 28px; background: white; border-radius: 50%; border: 6px solid var(--secondary); box-shadow: var(--shadow-md); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 35px;">
-                <div id="cvs-tier-badge" style="display: inline-block; padding: 10px 30px; border-radius: 50px; font-size: 16px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; box-shadow: var(--shadow-md); background: var(--secondary); color: white;">Moderate</div>
-                <h3 id="cvs-status-title" style="font-size: 22px; font-weight: 900; color: var(--text-main); margin: 0 0 10px 0; line-height: 1.2;">Significant Eye Strain</h3>
-                <p id="cvs-analysis-text" style="font-size: 15px; color: var(--text-sub); font-weight: 600; line-height: 1.6; margin: 0;">Your score indicates moderate digital eye strain symptoms.</p>
-            </div>
-
-            <div style="margin-top: 30px; padding-top: 25px; border-top: 2px dashed #f1f5f9; display: flex; flex-direction: column; gap: 12px;">
-                <button class="btn btn-primary" onclick="window.onTestFinish()" style="height: 64px; border-radius: 22px; font-size: 16px; font-weight: 900; box-shadow: var(--shadow-lg);">
-                    <span data-t="finish_close">Finish & Close</span> <i class="fas fa-check-circle"></i>
+            <div style="margin-top: 30px;">
+                <button class="btn btn-primary" onclick="window.onTestFinish()" style="height: 68px; border-radius: 24px; font-size: 18px; font-weight: 900; background: var(--cvs-blue); box-shadow: 0 12px 30px rgba(0,94,139,0.25); width: 100%; border: none;">
+                    View Final Summary <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
@@ -766,15 +807,28 @@
         </div>
 
         <div style="padding: 24px; margin-top: 55px;">
-            <div id="dash-goal-card" style="margin-bottom: 25px; background: white; padding: 20px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 15px; border: 1px solid #f1f5f9;">
-                <div style="width: 48px; height: 48px; background: #fffbeb; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 22px;">
-                    <i class="fas fa-fire"></i>
+            <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+                <div id="dash-doctor-card" onclick="navigate('scr-doctors')" style="flex: 1; background: white; padding: 20px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 12px; border: 1px solid #f1f5f9; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.borderColor='var(--primary)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#f1f5f9'; this.style.transform='none'">
+                    <div style="width: 40px; height: 40px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 18px;">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 14px; font-weight: 800; color: #1e293b; margin: 0;">My Doctors</h4>
+                        <p style="font-size: 10px; color: #64748b; font-weight: 600; margin: 2px 0 0 0;" id="dash-doctor-count">Manage your doctor list</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="font-size: 12px; color: #cbd5e1;"></i>
                 </div>
-                <div style="flex: 1;">
-                    <h4 style="font-size: 14px; font-weight: 800; color: #1e293b; margin: 0;" data-t="daily_progress">Daily Progress</h4>
-                    <p style="font-size: 11px; color: #64748b; font-weight: 600; margin: 2px 0 0 0;" id="dash-motivation">Help 10 patients today to reach your goal!</p>
+                
+                <div id="dash-goal-card" style="flex: 1.2; background: white; padding: 20px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 12px; border: 1px solid #f1f5f9;">
+                    <div style="width: 40px; height: 40px; background: #fffbeb; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 18px;">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 14px; font-weight: 800; color: #1e293b; margin: 0;">Goal</h4>
+                        <p style="font-size: 10px; color: #64748b; font-weight: 600; margin: 2px 0 0 0;" id="dash-motivation">Keep going!</p>
+                        <div style="font-size: 14px; font-weight: 900; color: var(--primary);" id="dash-percent">0%</div>
+                    </div>
                 </div>
-                <div style="font-size: 15px; font-weight: 900; color: var(--primary);" id="dash-percent">0%</div>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 5px;">
@@ -805,11 +859,69 @@
     </div>
 
 
-    <!-- ═══ Test Detail Screen ═══ -->
-    <div id="scr-detail" class="screen anim-screen" style="background: #f8fafc; padding: 0;">
+    <div id="scr-doctors" class="screen anim-screen" style="background: var(--primary-gradient);">
+        <div style="padding: 30px 24px 35px; color: white; position: relative; border-radius: 0 0 45px 45px;">
+            <button onclick="navigate('scr-dashboard')" style="position:absolute; top:105px; left:20px; background: rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:white; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div style="text-align:center;">
+                <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 5px;">Doctor Master</h2>
+                <p style="font-size: 12px; font-weight: 600; opacity: 0.8;">Manage your assigned physicians</p>
+            </div>
+        </div>
+
+        <div style="padding: 24px;">
+            <div style="background: white; border-radius: 28px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 25px;">
+                <h3 style="font-size: 16px; font-weight: 800; color: #1e293b; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-plus-circle" style="color: var(--primary);"></i> Add New Doctor
+                </h3>
+                <form id="add-doctor-form" onsubmit="saveDoctor(event)" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div style="position: relative;">
+                        <input type="text" id="doc-name" placeholder="Doctor Full Name" required maxlength="50" 
+                            oninput="this.value = this.value.replace(/[0-9]/g, '')"
+                            style="width: 100%; height: 52px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 0 15px 0 45px; font-size: 14px; font-weight: 600; color: #1e293b; outline: none; transition: all 0.2s;">
+                        <i class="fas fa-user-md" style="position: absolute; left: 18px; top: 18px; color: #94a3b8; font-size: 16px;"></i>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div style="position: relative; flex: 1.2; display: flex; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden;">
+                            <div style="padding-left: 15px; color: #94a3b8; font-weight: 800; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-phone-alt" style="font-size: 14px;"></i>
+                                <span>+91</span>
+                            </div>
+                            <input type="tel" id="doc-mobile" placeholder="Mobile Number" required maxlength="10" 
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                style="flex: 1; height: 52px; background: transparent; border: none; padding: 0 15px 0 8px; font-size: 14px; font-weight: 600; color: #1e293b; outline: none;">
+                        </div>
+                        <div style="position: relative; flex: 0.8;">
+                            <input type="text" id="doc-city" placeholder="City" required maxlength="30" 
+                                oninput="this.value = this.value.replace(/[0-9]/g, '')"
+                                style="width: 100%; height: 52px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 0 15px 0 45px; font-size: 14px; font-weight: 600; color: #1e293b; outline: none; transition: all 0.2s;">
+                            <i class="fas fa-map-marker-alt" style="position: absolute; left: 18px; top: 18px; color: #94a3b8; font-size: 16px;"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="height: 52px; border-radius: 14px; font-size: 14px; font-weight: 800; margin-top: 10px;">
+                        Save Doctor <i class="fas fa-save ml-2"></i>
+                    </button>
+                </form>
+            </div>
+
+            <h3 style="font-size: 16px; font-weight: 800; color:#1e293b; display:flex; align-items:center; gap:10px; margin-bottom: 15px;">
+                <i class="fas fa-list-ul" style="color: var(--primary); font-size: 14px;"></i>
+                Registered Doctors
+            </h3>
+            
+            <div id="doctor-list" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Doctor cards will be injected here -->
+            </div>
+        </div>
+        <div style="height: 80px;"></div>
+    </div>
+
+
+    <div id="scr-detail" class="screen anim-screen" style="background: var(--primary-gradient);">
         <!-- Back header -->
-        <div style="background: var(--primary-gradient); padding: 100px 24px 30px; color: white; position: relative;">
-            <button onclick="navigate('scr-dashboard')" style="position:absolute; top:80px; left:20px; background: rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:white; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+        <div style="padding: 30px 24px 30px; color: white; position: relative;">
+            <button onclick="navigate('scr-dashboard')" style="position:absolute; top:105px; left:20px; background: rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:white; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer;">
                 <i class="fas fa-arrow-left"></i>
             </button>
             <div style="text-align:center; padding-top:10px;">
@@ -823,6 +935,18 @@
         </div>
 
         <div style="padding: 24px; padding-bottom: 40px;">
+            <!-- Associated Doctor Card -->
+            <div id="det-doctor-card" style="display:none; background: #f5f3ff; border-radius: 24px; padding: 20px; border: 1px solid #ddd6fe; margin-bottom: 16px; align-items: center; gap: 15px;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-size: 10px; font-weight: 800; color: #8b5cf6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">Associated Doctor</div>
+                    <div style="font-size: 15px; font-weight: 900; color: #4c1d95; line-height: 1.2;" id="det-docname">-</div>
+                    <div style="font-size: 11px; font-weight: 700; color: #8b5cf6;" id="det-doccity">-</div>
+                </div>
+            </div>
+
             <!-- Blink Score Card -->
             <div style="background: white; border-radius: 32px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; margin-bottom: 16px;">
                 <div style="text-align:center; margin-bottom:20px;">
@@ -1033,6 +1157,13 @@
         translations[lang] = pages.ui || {};
         resSets[lang] = pages.cvs_result || {};
         
+        // Add manual overrides for new features if missing in DB
+        translations[lang].blink_assessment_result = translations[lang].blink_assessment_result || "Blink Analysis Result";
+        translations[lang].cvs_assessment_result = translations[lang].cvs_assessment_result || "CVS Assessment Result";
+        translations[lang].share_report_whatsapp = translations[lang].share_report_whatsapp || "Share Report via WhatsApp";
+        translations[lang].enter_10_digit = translations[lang].enter_10_digit || "Enter 10-digit Mobile Number";
+        translations[lang].final_summary = translations[lang].final_summary || "Final Summary";
+        
         if (pages.analysis) {
             blinkAnalysisSet[lang] = {};
             const analysis = pages.analysis;
@@ -1067,6 +1198,10 @@
         if (target) {
             target.classList.add('active');
             console.log("Screen activated:", screenId);
+            
+            // Trigger specific screen logic
+            if (screenId === 'scr-doctors') fetchDoctors();
+            if (screenId === 'scr-dashboard') loadDashboard();
         } else {
             console.error("Screen NOT FOUND:", screenId);
         }
@@ -1195,6 +1330,16 @@
             animateValue('stat-month', oldMonth, data.month || 0, 1000);
             animateValue('stat-visits', oldTotal, data.total || 0, 1000);
             
+            // Fetch and update Doctor count
+            fetch(`{{ route('doctors.index') }}?so_id=${state.empCode}`)
+                .then(r => r.json())
+                .then(d => {
+                    if(d.success) {
+                        const count = d.doctors.length;
+                        document.getElementById('dash-doctor-count').innerText = `${count} doctor${count !== 1 ? 's' : ''} added`;
+                    }
+                });
+            
             // Goal Logic
             const goal = 10;
             const today = data.today || 0;
@@ -1202,9 +1347,11 @@
             document.getElementById('dash-percent').innerText = percent + '%';
             
             const motivationEl = document.getElementById('dash-motivation');
-            if (today === 0) motivationEl.innerText = t("start_motivation");
-            else if (today < goal) motivationEl.innerText = t("progress_motivation", { count: goal - today });
-            else motivationEl.innerText = t("goal_motivation");
+            if (motivationEl) {
+                if (today === 0) motivationEl.innerText = t("start_motivation");
+                else if (today < goal) motivationEl.innerText = t("progress_motivation", { count: goal - today });
+                else motivationEl.innerText = t("goal_motivation");
+            }
 
             cache.totalItems = data.total || 0;
 
@@ -1243,7 +1390,13 @@
                         </div>
                         <div class="history-info" style="overflow: hidden;">
                             <h4 style="margin: 0; font-size: 14px; font-weight: 800; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-t="blink_screening_label">${t("blink_screening_label")}</h4>
-                            <p style="margin: 2px 0 0; font-size: 12px; color: var(--text-sub); font-weight: 600;">${new Date(item.created_at).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})}</p>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+                                <p style="margin: 0; font-size: 11px; color: var(--text-sub); font-weight: 600;">${new Date(item.created_at).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'})}</p>
+                                <span style="width: 3px; height: 3px; background: #cbd5e1; border-radius: 50%;"></span>
+                                <p style="margin: 0; font-size: 11px; font-weight: 700; color: ${item.doctor ? 'var(--primary)' : '#94a3b8'}; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    ${item.doctor ? item.doctor.name : 'Doctor Pending'}
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div style="display:flex; align-items:center; gap:8px;">
@@ -1307,8 +1460,15 @@
     }
 
     function onResults(results) {
-        if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) return;
+        if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) {
+            eyeClosed = false; // Internal state reset (Total count remains safe)
+            return;
+        }
+        
+        // Ensure we have high confidence detection
         const landmarks = results.multiFaceLandmarks[0];
+        if (!landmarks || landmarks.length < 468) return; 
+        
         const leftEAR = getEAR(landmarks, [362, 385, 387, 263, 373, 380]);
         const rightEAR = getEAR(landmarks, [33, 160, 158, 133, 153, 144]);
         const avgEAR = (leftEAR + rightEAR) / 2.0;
@@ -1403,11 +1563,13 @@
         const finalCountEl = document.getElementById('final-blink-count');
         if(finalCountEl) finalCountEl.innerText = blinkCount;
         
-        const scaledCountEl = document.getElementById('scaled-blink-count');
-        if(scaledCountEl) scaledCountEl.innerText = oneMinuteCount;
+        // Redesigned Result Page IDs
+        const resBlinkEl = document.getElementById('result-blink');
+        if(resBlinkEl) resBlinkEl.innerText = oneMinuteCount;
         
-        const reportDateEl = document.getElementById('report-date');
-        if(reportDateEl) reportDateEl.innerText = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
+        const resDateEl = document.getElementById('result-report-date');
+        if(resDateEl) resDateEl.innerText = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
+        
         const reportSoEl = document.getElementById('report-so-name');
         if(reportSoEl && state.empName) reportSoEl.innerText = state.empName;
         
@@ -1493,9 +1655,13 @@
 
     async function shareToWhatsApp() {
         const num = document.getElementById('whatsapp-num').value.trim();
+        if (num.length !== 10) {
+            showToast("Please enter a valid 10-digit mobile number");
+            return;
+        }
+        
         const msg = `🩺 *Ajanta Eye Health Screening Complete*\n\nBlink Rate: ${state.blinkCount}\nCVS Score: ${state.cvsScore}\n\nFacilitated by: ${state.empName || state.empCode}`;
-        if (!num) return showToast("Please enter a WhatsApp number");
-        window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`https://wa.me/91${num}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
     function onTestFinish() {
@@ -1505,8 +1671,12 @@
         document.getElementById('ty-cvs-status').innerText = state.cvsTier || '---';
         document.getElementById('thank-you-so-code').innerText = state.empCode;
 
-        if (state.isPatientMode) navigate('scr-thank-you');
-        else navigate('scr-dashboard');
+        if (state.isPatientMode) {
+            navigate('scr-thank-you');
+        } else {
+            navigate('scr-dashboard');
+            loadDashboard();
+        }
     }
 
     let detailTestData = null;
@@ -1546,6 +1716,23 @@
                 document.getElementById('det-status').textContent = status;
                 document.getElementById('det-analysis').textContent = analysis;
                 setTimeout(() => { document.getElementById('det-indicator').style.left = pct + '%'; }, 200);
+
+                // Doctor Display
+                const docCard = document.getElementById('det-doctor-card');
+                docCard.style.display = 'flex';
+                if (t.doctor) {
+                    docCard.style.background = '#f5f3ff';
+                    docCard.style.borderColor = '#ddd6fe';
+                    document.getElementById('det-docname').textContent = t.doctor.name;
+                    document.getElementById('det-docname').style.color = '#4c1d95';
+                    document.getElementById('det-doccity').textContent = t.doctor.city || 'City not provided';
+                } else {
+                    docCard.style.background = '#f8fafc';
+                    docCard.style.borderColor = '#e2e8f0';
+                    document.getElementById('det-docname').textContent = 'Doctor Pending';
+                    document.getElementById('det-docname').style.color = '#94a3b8';
+                    document.getElementById('det-doccity').textContent = 'Add a doctor to auto-assign';
+                }
 
                 if (t.cvs) {
                     document.getElementById('det-cvs-card').style.display = 'block';
@@ -1609,6 +1796,7 @@
         sessionStorage.setItem('lang', lang);
         updateTranslations();
         window.cvsSymptoms = rawSymptoms[lang] || rawSymptoms['en'] || [];
+        if (typeof renderCvsQuestions === 'function') renderCvsQuestions();
         closeLanguageModal();
         fetch(`{{ route('blink.set_language') }}`, {
             method: 'POST',
@@ -1727,6 +1915,97 @@
             body: JSON.stringify({ emp_code: state.empCode, blink_test_id: state.lastBlinkTestId || null, symptom_data: window.cvsScores, total_score: score, has_cvs: score >= 6 })
         });
         navigate('scr-cvs-result');
+    }
+
+    // ─── DOCTOR MANAGEMENT ───
+    async function fetchDoctors() {
+        if (!state.empCode) return;
+        const list = document.getElementById('doctor-list');
+        if (!list) return;
+        list.innerHTML = '<div style="text-align:center; padding:20px; opacity:0.5;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+        
+        try {
+            const res = await fetch(`{{ route('doctors.index') }}?so_id=${state.empCode}`);
+            const data = await res.json();
+            if (!data.success) throw new Error();
+            
+            list.innerHTML = '';
+            if (data.doctors.length === 0) {
+                list.innerHTML = '<div style="text-align:center; padding:40px; background:white; border-radius:24px; border:2px dashed #e2e8f0; color:#94a3b8; font-weight:700; font-size:13px;">No doctors added yet. Add your first doctor above.</div>';
+                return;
+            }
+            
+            data.doctors.forEach(doc => {
+                const card = document.createElement('div');
+                card.style.cssText = 'background: white; border-radius: 20px; padding: 18px; border: 1px solid #f1f5f9; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);';
+                card.innerHTML = `
+                    <div style="width: 44px; height: 44px; background: #f0f9ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #0ea5e9; font-size: 20px;">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 15px; font-weight: 800; color: #1e293b; margin: 0;">${doc.name}</h4>
+                        <p style="font-size: 11px; color: #64748b; font-weight: 600; margin: 2px 0 0 0;">${doc.city || '-'}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="font-size: 11px; font-weight: 800; color: var(--primary); margin: 0;">${doc.mobile || '-'}</p>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        } catch (e) {
+            list.innerHTML = '<div style="color:red; text-align:center; padding:20px;">Error loading doctors</div>';
+        }
+    }
+
+    async function saveDoctor(event) {
+        event.preventDefault();
+        const form = event.target;
+        const btn = form.querySelector('button[type="submit"]');
+        const originalBtnText = btn.innerHTML;
+        
+        if (!state.empCode) {
+            showToast("Error: Employee Code not found. Please log in again.");
+            return;
+        }
+
+        const mobileVal = document.getElementById('doc-mobile').value.trim();
+        if (mobileVal.length !== 10) {
+            showToast("Error: Mobile number must be exactly 10 digits.");
+            return;
+        }
+
+        const docData = {
+            emp_code: state.empCode,
+            name: document.getElementById('doc-name').value.trim(),
+            speciality: 'Doctor',
+            mobile: '+91' + mobileVal,
+            city: document.getElementById('doc-city').value.trim(),
+        };
+        
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        btn.disabled = true;
+        
+        try {
+            const res = await fetch(`{{ route('doctors.store') }}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: JSON.stringify(docData)
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast("Doctor saved successfully!");
+                form.reset();
+                fetchDoctors();
+                loadDashboard(); // Update count
+            } else {
+                showToast("Error: " + (data.message || "Could not save doctor"));
+            }
+        } catch (e) {
+            showToast("Server error occurred");
+        } finally {
+            btn.innerHTML = originalBtnText;
+            btn.disabled = false;
+        }
     }
 
     // High-Reliability Splash Dismissal

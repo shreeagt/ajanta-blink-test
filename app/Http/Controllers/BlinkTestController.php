@@ -16,9 +16,15 @@ class BlinkTestController extends Controller
             'blink_count' => 'required|integer',
         ]);
 
+        // Find recently added doctor by this employee
+        $latestDoctor = \App\Models\Doctor::where('emp_code', $request->emp_code)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
         $test = BlinkTest::create([
             'emp_code' => $request->emp_code,
             'blink_count' => $request->blink_count,
+            'doctor_id' => $latestDoctor ? $latestDoctor->id : null
         ]);
 
         return response()->json(['success' => true, 'test' => $test]);
@@ -61,7 +67,7 @@ class BlinkTestController extends Controller
 
         $totalTests = BlinkTest::where('emp_code', $soId)->count();
         
-        $history = BlinkTest::where('emp_code', $soId)
+        $history = BlinkTest::with('doctor')->where('emp_code', $soId)
             ->orderBy('created_at', 'desc')
             ->skip($offset)
             ->take(10)
@@ -78,7 +84,7 @@ class BlinkTestController extends Controller
 
     public function getTestDetail(Request $request, $id)
     {
-        $test = BlinkTest::with(['employee', 'cvs'])->findOrFail($id);
+        $test = BlinkTest::with(['employee', 'cvs', 'doctor'])->findOrFail($id);
 
         // Security: only the SO who owns this test can view it
         $soId = $request->query('so_id');

@@ -92,14 +92,27 @@
 
 <div class="admin-content">
     <div class="card-container">
-        <div class="card-header-custom">
+        <div class="card-header-custom" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:15px;">
             <div>
                 <h2>All Screening Records</h2>
                 <p style="font-size:13px; color:#64748b; font-weight:600; margin:5px 0 0;">Click any row to view full test details &amp; download PDF</p>
             </div>
-            <button onclick="exportCSV()" class="btn-custom btn-primary-custom">
-                <i class="fas fa-cloud-download-alt"></i> Export CSV
-            </button>
+            <div style="display:flex; gap:15px; align-items:center;">
+                <div style="position:relative;">
+                    <i class="fas fa-filter" style="position:absolute; left:15px; top:12px; color:var(--primary); font-size:14px;"></i>
+                    <select id="dmFilter" class="form-control" style="padding-left:40px; border-radius:12px; font-weight:700; color:#475569; height:42px; border:1px solid #cbd5e1; min-width:200px;">
+                        <option value="">All District Managers</option>
+                        @if(isset($uniqueDMs))
+                            @foreach($uniqueDMs as $dm)
+                                <option value="{{ $dm }}">{{ $dm }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <button onclick="exportCSV()" class="btn-custom btn-primary-custom" style="height:42px;">
+                    <i class="fas fa-cloud-download-alt"></i> Export CSV
+                </button>
+            </div>
         </div>
 
         <div class="table-responsive-custom">
@@ -108,7 +121,9 @@
                     <tr>
                         <th>Session</th>
                         <th>SO Name & ID</th>
-                        <th>HQ</th>
+                        <th>DM Name</th>
+                        <th>Associated Doctor</th>
+                        <th>HQ / State</th>
                         <th>Blink Rate</th>
                         <th>CVS Score</th>
                         <th>Date & Time</th>
@@ -155,7 +170,27 @@
                                 </div>
                             </div>
                         </td>
-                        <td style="font-weight:700; color:#64748b; font-size:13px;">{{ $soHq }}</td>
+                        @php
+                            $dmName = $item->employee ? $item->employee->dm_name : '—';
+                            $rsmName = $item->employee ? $item->employee->rsm_name : '—';
+                            $stateName = $item->employee ? $item->employee->state : '—';
+                        @endphp
+                        <td>
+                            <div style="font-weight: 800; color: var(--text-dark); font-size: 13px;">{{ $dmName ?: '—' }}</div>
+                            <div style="font-weight: 600; color: #94a3b8; font-size: 11px;">RSM: {{ $rsmName ?: '—' }}</div>
+                        </td>
+                        <td>
+                            @if($item->doctor)
+                                <div style="font-weight: 800; color: var(--primary); font-size: 13px;">{{ $item->doctor->name }}</div>
+                                <div style="font-weight: 600; color: #94a3b8; font-size: 11px;">{{ $item->doctor->speciality ?: 'Doctor' }}</div>
+                            @else
+                                <span style="font-size: 11px; font-weight: 700; color: #cbd5e1; background: #f8fafc; padding: 4px 10px; border-radius: 6px; border: 1px solid #e2e8f0;">No Doctor</span>
+                            @endif
+                        </td>
+                        <td>
+                            <div style="font-weight:700; color:#64748b; font-size:13px;">{{ $soHq }}</div>
+                            <div style="font-weight:600; color:#94a3b8; font-size:11px;">{{ $stateName ?: '—' }}</div>
+                        </td>
                         <td>
                             <div style="font-size:20px; font-weight:900; color:#0f172a;">{{ $scaledCount }} <span style="font-size:11px; color:#94a3b8; font-weight:700;">bpm</span></div>
                             <div style="background:#f1f5f9; border-radius:10px; height:6px; width:100px; margin-top:6px; overflow:hidden;">
@@ -202,14 +237,46 @@
             </div>
         </div>
         <div class="detail-body">
-            {{-- SO Info --}}
-            <div style="background:#eff6ff; border-radius:24px; padding:20px; margin-bottom:25px; display:flex; align-items:center; gap:15px; border:1px solid #dbeafe;">
-                <div id="dh-avatar" style="width:60px; height:60px; border-radius:18px; background:var(--primary-gradient); color:white; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900;"></div>
-                <div>
-                    <div style="font-size:11px; font-weight:800; color:#3b82f6; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Sales Officer (Facilitator)</div>
-                    <div style="font-size:18px; font-weight:900; color:#1e3a8a;" id="dh-soname">—</div>
-                    <div style="font-size:13px; font-weight:700; color:#3b82f6;" id="dh-socode">—</div>
-                    <div style="font-size:12px; color:#60a5fa; font-weight:600; margin-top:2px;" id="dh-sohq">—</div>
+            {{-- Doctor & Patient Info --}}
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                {{-- Facilitator Box --}}
+                <div style="background:#eff6ff; border-radius:24px; padding:20px; display:flex; align-items:center; gap:15px; border:1px solid #dbeafe;">
+                    <div id="dh-avatar" style="width:50px; height:50px; border-radius:14px; background:var(--primary-gradient); color:white; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900;"></div>
+                    <div style="flex:1;">
+                        <div style="font-size:10px; font-weight:800; color:#3b82f6; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px;">Sales Officer</div>
+                        <div style="font-size:15px; font-weight:900; color:#1e3a8a; line-height:1.2;" id="dh-soname">—</div>
+                        <div style="font-size:11px; font-weight:700; color:#3b82f6;" id="dh-socode">—</div>
+                    </div>
+                </div>
+                
+                {{-- Doctor Box --}}
+                <div style="background:#f5f3ff; border-radius:24px; padding:20px; display:flex; align-items:center; gap:15px; border:1px solid #ddd6fe;">
+                    <div style="width:50px; height:50px; border-radius:14px; background:linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color:white; display:flex; align-items:center; justify-content:center; font-size:18px;">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div style="flex:1;">
+                        <div style="font-size:10px; font-weight:800; color:#8b5cf6; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px;">Associated Doctor</div>
+                        <div style="font-size:15px; font-weight:900; color:#4c1d95; line-height:1.2;" id="dh-docname">No Doctor</div>
+                        <div style="font-size:11px; font-weight:700; color:#8b5cf6;" id="dh-docspec">—</div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Hierarchy Info --}}
+            <div style="background:#f8fafc; border-radius:24px; padding:15px 25px; margin-bottom:25px; display:flex; justify-content:space-between; border:1px solid #f1f5f9; align-items:center;">
+                <div style="display:flex; gap:30px;">
+                    <div>
+                        <div style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; margin-bottom:2px;">District Manager</div>
+                        <div style="font-size:13px; font-weight:800; color:#1e293b;" id="dh-sodm">—</div>
+                    </div>
+                    <div>
+                        <div style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; margin-bottom:2px;">Regional Manager</div>
+                        <div style="font-size:13px; font-weight:800; color:#1e293b;" id="dh-sorsm">—</div>
+                    </div>
+                    <div>
+                        <div style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; margin-bottom:2px;">Headquarter</div>
+                        <div style="font-size:13px; font-weight:800; color:#1e293b;" id="dh-sohq">—</div>
+                    </div>
                 </div>
             </div>
 
@@ -276,8 +343,9 @@
 <script>
 let currentTest = null;
 
+let table;
 $(document).ready(function() {
-    $('#analyticsTable').DataTable({
+    table = $('#analyticsTable').DataTable({
         dom: '<"row align-items-center mb-4"<"col-md-6"B><"col-md-6 d-flex justify-content-end"f>>rt<"row align-items-center mt-4"<"col-md-6"i><"col-md-6"p>>',
         buttons: [
             { extend: 'excelHtml5', text: '<i class="fas fa-file-excel mr-2"></i> Excel', className: 'btn-custom btn-primary-custom', title: 'Ajanta_BlinkTest_Report' }
@@ -288,6 +356,18 @@ $(document).ready(function() {
             search: "",
             searchPlaceholder: "Search records...",
             info: "Showing _START_ to _END_ of _TOTAL_ screenings"
+        }
+    });
+
+    // Custom filtering for DM Name dropdown
+    $('#dmFilter').on('change', function() {
+        const selectedDM = $(this).val();
+        if (selectedDM) {
+            // Filter the 'DM Name' column (index 2) by exact match using regex
+            table.column(2).search('^' + $.fn.dataTable.util.escapeRegex(selectedDM) + '$', true, false).draw();
+        } else {
+            // Clear filter
+            table.column(2).search('').draw();
         }
     });
 });
@@ -305,7 +385,9 @@ function openDetail(id) {
             const soName = t.employee ? t.employee.name : t.emp_code;
             const soCode = t.emp_code;
             const soHq = t.employee ? t.employee.hq : '—';
-            const initials = soName.split(' ').map(w=>w[0].toUpperCase()).slice(0,2).join('');
+            const soDm = t.employee ? t.employee.dm_name : '—';
+            const soRsm = t.employee ? t.employee.rsm_name : '—';
+            const initials = soName.split(' ').map(w=>w[0] ? w[0].toUpperCase() : '').slice(0,2).join('');
             const date = new Date(t.created_at);
             const dateStr = date.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
 
@@ -330,6 +412,17 @@ function openDetail(id) {
             document.getElementById('dh-soname').textContent = soName;
             document.getElementById('dh-socode').textContent = soCode;
             document.getElementById('dh-sohq').textContent = soHq;
+            document.getElementById('dh-sodm').textContent = soDm || '—';
+            document.getElementById('dh-sorsm').textContent = soRsm || '—';
+            
+            // Doctor Info
+            if (t.doctor) {
+                document.getElementById('dh-docname').textContent = t.doctor.name;
+                document.getElementById('dh-docspec').textContent = (t.doctor.speciality || 'General') + ' • ' + (t.doctor.city || '—');
+            } else {
+                document.getElementById('dh-docname').textContent = 'No Doctor';
+                document.getElementById('dh-docspec').textContent = '—';
+            }
             document.getElementById('d-blink').textContent = scaledCount;
             document.getElementById('d-status').textContent = status;
             document.getElementById('d-status').style.color = color;
