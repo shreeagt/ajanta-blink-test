@@ -159,11 +159,11 @@
             @include('layouts.partials.messages')
 
             <div class="form-group">
-                <label>Email</label>
+                <label>Admin ID</label>
                 <div class="input-wrapper">
                     <i class="fas fa-user-shield"></i>
-                    <input type="email" class="form-control" name="email" value="{{ old('email') }}"
-                        placeholder="admin@ajantapharma.com" required autofocus>
+                    <input type="text" class="form-control" name="email" value="{{ old('email') }}"
+                        placeholder="Enter Admin ID" required autofocus>
                 </div>
             </div>
 

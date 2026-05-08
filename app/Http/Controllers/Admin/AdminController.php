@@ -17,7 +17,7 @@ class AdminController extends Controller
 {
     public function verifyAdmin(Request $request){
         $data = $request->validate([
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ]);
         // Ensure the user is an admin (role_id = 1)
