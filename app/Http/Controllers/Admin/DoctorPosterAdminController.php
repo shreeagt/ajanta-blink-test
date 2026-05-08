@@ -32,6 +32,36 @@ class DoctorPosterAdminController extends Controller
         return view('admin.manpower_master', compact('soEmployees', 'dmEmployees'));
     }
 
+    public function exportManpower()
+    {
+        $employees = Employee::orderBy('role', 'desc')->orderBy('name', 'asc')->get();
+        $filename = "Manpower_Master_" . date('Y-m-d') . ".csv";
+        $handle = fopen('php://output', 'w');
+        
+        // CSV Headers
+        fputcsv($handle, ['Role', 'Employee Code', 'Name', 'HQ/State', 'DM Name', 'RSM Name', 'Personalized URL']);
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $baseUrl = request()->getSchemeAndHttpHost();
+
+        foreach ($employees as $emp) {
+            fputcsv($handle, [
+                $emp->role,
+                $emp->emp_code,
+                $emp->name,
+                ($emp->hq ? $emp->hq : '') . ($emp->state ? ' / ' . $emp->state : ''),
+                $emp->dm_name ?? '-',
+                $emp->rsm_name ?? '-',
+                $baseUrl . '/' . $emp->emp_code
+            ]);
+        }
+
+        fclose($handle);
+        exit;
+    }
+
     public function stats()
     {
         $count = BlinkTest::count();

@@ -54,6 +54,7 @@ Route::middleware(['auth', 'IsAdmin'])->prefix('admin')->group(function () {
     // Blink Test admin routes
     Route::get('/blink-dashboard', [DoctorPosterAdminController::class, 'dashboard'])->name('admin.blink.dashboard');
     Route::get('/manpower-master', [DoctorPosterAdminController::class, 'manpower'])->name('admin.manpower.master');
+    Route::get('/export-manpower', [DoctorPosterAdminController::class, 'exportManpower'])->name('admin.manpower.export');
     Route::get('/import-manpower', [DoctorPosterAdminController::class, 'importEmployees'])->name('admin.import.manpower');
 
     // Admin utilities

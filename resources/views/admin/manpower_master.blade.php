@@ -8,9 +8,14 @@
         <h1>Field Force Management</h1>
         <p>Administer representative credentials and personalized screening URLs for the Dry Eye campaign.</p>
     </div>
-    <a href="{{ route('admin.import.manpower') }}" class="btn-custom btn-primary-custom" style="padding: 12px 25px; border-radius: 15px;">
-        <i class="fas fa-file-import mr-2"></i> Sync from CSV
-    </a>
+    <div>
+        <a href="{{ route('admin.manpower.export') }}" class="btn-custom border-primary text-primary bg-white mr-2" style="padding: 12px 25px; border-radius: 15px; border: 2px solid var(--primary); font-weight: 800;">
+            <i class="fas fa-file-excel mr-2"></i> Download Master List
+        </a>
+        <a href="{{ route('admin.import.manpower') }}" class="btn-custom btn-primary-custom" style="padding: 12px 25px; border-radius: 15px;">
+            <i class="fas fa-file-import mr-2"></i> Sync from CSV
+        </a>
+    </div>
 </div>
 
 <div class="stats-grid">
